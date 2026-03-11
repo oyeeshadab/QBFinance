@@ -7,6 +7,7 @@ import WelcomeScreen from '../screens/Welcome/WelcomeScreen';
 import AddTransaction from '@screens/Secret/FinanceTracker/Transactions/AddTransactionScreen';
 import { Platform } from 'react-native';
 import { Transaction } from '@database/types';
+import { CreateCategorySheet } from '@components/FinanceTracker/Components/CategoryGrid/CreateCategorySheet';
 
 export type RootStackParamList = {
   Login: undefined;
@@ -15,17 +16,21 @@ export type RootStackParamList = {
   Welcome: undefined;
   SecretNavigator: undefined;
   AddTransaction: { item?: Transaction };
+  CreateCategorySheet: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export const AppNavigator = () => {
   return (
-    <Stack.Navigator
-      screenOptions={{ headerShown: false, animation: 'slide_from_bottom' }}
-    >
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Welcome" component={WelcomeScreen} />
       <Stack.Screen name="AddTransaction" component={AddTransaction} />
+      <Stack.Screen
+        name="CreateCategorySheet"
+        component={CreateCategorySheet}
+        options={{ animation: 'slide_from_bottom' }}
+      />
       {/* <Stack.Screen name="Login" component={LoginScreen} /> */}
       <Stack.Screen
         name="Login"

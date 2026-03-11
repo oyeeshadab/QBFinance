@@ -97,8 +97,6 @@ export const useStyle = (theme: AppTheme) =>
       gap: 4,
     },
 
-    actionText: { color: '#fff', fontSize: 16 },
-
     txHeader: {
       flexDirection: 'row',
       justifyContent: 'space-between',
@@ -144,15 +142,12 @@ export const useStyle = (theme: AppTheme) =>
       width: Dimensions.get('window').width - 40,
       borderRadius: 10,
       justifyContent: 'center',
+      alignItems: 'center',
       elevation: 15,
       backgroundColor: theme.colors.white,
       paddingHorizontal: 10,
     },
-    actionButtonContainer: {
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
+
     bottomSheetWrapper: {
       backgroundColor: theme.colors.white,
       display: 'none',

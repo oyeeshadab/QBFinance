@@ -20,7 +20,8 @@
       "@theme/*": ["src/theme/*"],
       "@types/*": ["src/types/*"],
       "@constants/*": ["src/constants/*"],
-      "@database/*": ["src/database/*"]
+      "@database/*": ["src/database/*"],
+      "@app-types/*": ["src/types/*"]
     },
 
     /* Existing */

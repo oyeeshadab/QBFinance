@@ -1,5 +1,5 @@
 import { AppTheme } from '@theme/themes';
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 export const useStyle = (theme: AppTheme) =>
   StyleSheet.create({
     card: {
@@ -32,5 +32,27 @@ export const useStyle = (theme: AppTheme) =>
       alignItems: 'center',
       marginRight: 12,
     },
-    // txAmount: { color: theme.colors.white },
+    actionButton: {
+      alignItems: 'center',
+      marginBottom: 10,
+    },
+    deleteButton: {
+      backgroundColor: theme.colors.delete,
+    },
+    actionButtonContainer: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    actionText: { fontSize: 16 },
+    buttonContainer: {
+      height: 45,
+      width: Dimensions.get('window').width - 40,
+      borderRadius: 10,
+      justifyContent: 'center',
+      alignItems: 'center',
+      elevation: 15,
+      backgroundColor: theme.colors.white,
+      paddingHorizontal: 10,
+    },
   });

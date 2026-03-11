@@ -78,6 +78,31 @@ export const TransactionRepo = {
     }
   },
 
+  deleteTransaction: async (payload: Partial<Transaction>) => {
+    if (!payload.id) {
+      throw new Error('Transaction ID is required for update.');
+    }
+    try {
+      const db = await getDB();
+      const res = await db.executeSql(
+        `DELETE from transactions
+         WHERE id = ?`,
+        [payload.id],
+      );
+
+      return {
+        success: true,
+        rowsAffected: res[0].rowsAffected,
+      };
+    } catch (error) {
+      console.log('updateTransaction error', error);
+
+      return {
+        success: false,
+      };
+    }
+  },
+
   getCurrentMonthTransactions: async (): Promise<CurrentMonthTxResponse> => {
     const db = await getDB();
 

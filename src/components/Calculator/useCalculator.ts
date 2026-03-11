@@ -13,11 +13,18 @@ export const useCalculator = ({
   );
 
   const appendValue = (value: string) => {
-    setExpression(prev => prev + value);
+    setExpression(prev => {
+      if (prev === '' && value === '0') {
+        return prev;
+      }
+
+      return prev + value;
+    });
   };
 
   const deleteLast = () => {
     setExpression(prev => prev.slice(0, -1));
+    setAmount(0);
   };
 
   const clearAll = () => {

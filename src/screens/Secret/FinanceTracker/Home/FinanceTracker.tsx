@@ -16,6 +16,7 @@ import Text from '@components/Text/Text';
 import MainCard from '@components/FinanceTracker/Components/MainCard';
 import { Transaction } from '@database/types';
 import TransactionList from '@components/FinanceTracker/Components/TransactionList';
+import ActionButton from '@components/FinanceTracker/Components/ActionButton';
 
 export default function FinanceTracker({ navigation }: { navigation: any }) {
   const {
@@ -61,24 +62,28 @@ export default function FinanceTracker({ navigation }: { navigation: any }) {
 
         {/* ACTIONS */}
         <View style={styles.actions}>
-          <NeumorphicContainer>
-            <TouchableOpacity
+          <ActionButton
+            title={'Add'}
+            icon={{ name: 'add', library: 'Ionicons' }}
+            onPress={handleOpen}
+          />
+          {/* <>
+                  <RenderIcon
+                    library={'Ionicons'}
+                    name={'add'}
+                    color={theme.colors.black}
+                  />
+                  <Text color={theme.colors.black} size={16}>
+                    
+                  </Text>
+                </> */}
+          {/* <TouchableOpacity
               activeOpacity={0.5}
               onPress={handleOpen}
               style={[styles.buttonContainer]}
             >
-              <View style={styles.actionButtonContainer}>
-                <RenderIcon
-                  library={'Ionicons'}
-                  name={'add'}
-                  color={theme.colors.black}
-                />
-                <Text color={theme.colors.black} size={16}>
-                  Add
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </NeumorphicContainer>
+              <View style={styles.actionButtonContainer} />
+            </TouchableOpacity> */}
         </View>
 
         {/* TRANSACTIONS HEADER */}

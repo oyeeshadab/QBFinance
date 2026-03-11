@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -11,6 +11,9 @@ import { CategoryIcon } from '../CategoryIconComponent';
 import { useCategoryGrid } from './useCategoryGrid';
 import { styles } from './styles';
 import LottieView from 'lottie-react-native';
+import { CreateCategorySheet } from './CreateCategorySheet';
+import BottomSheetComponent from '@components/BottomSheet/BottomSheetComponent';
+// import { useNavigation } from '@react-navigation/native';
 
 export interface CategoryItem {
   id: number;
@@ -23,29 +26,46 @@ export interface CategoryItem {
 interface Props {
   // categories: CategoryItem[];
   onSelect: (item: CategoryItem, event: GestureResponderEvent) => void;
+  navigation: any;
 }
 
-export const CategoryGrid = React.memo(({ onSelect }: Props) => {
-  // export const CategoryGrid = ({ onSelect }: Props) => {
-  const { data, loading, keyExtractor } = useCategoryGrid();
+export const CategoryGrid = React.memo(({ onSelect, navigation }: Props) => {
+  const { data, loading, keyExtractor, refreshCategories } = useCategoryGrid();
   const renderItem = useCallback(
-    ({ item }: { item: CategoryItem }) => (
-      <View style={styles.itemWrapper}>
-        <TouchableOpacity
-          activeOpacity={0.6}
-          onPress={e => onSelect(item, e)}
-          style={[styles.colorItem, { backgroundColor: item.color }]}
-        >
-          <CategoryIcon icon_name={item.icon} />
-        </TouchableOpacity>
+    ({ item }: { item: CategoryItem }) => {
+      console.log('🚀 ~ item:', item?.id);
+      return (
+        <View style={styles.itemWrapper}>
+          <TouchableOpacity
+            activeOpacity={0.6}
+            // onPress={handleCreateNew}
+            onPress={e =>
+              item?.id === -1 ? handleCreateNew() : onSelect(item, e)
+            }
+            style={[styles.colorItem, { backgroundColor: item.color }]}
+          >
+            <CategoryIcon icon_name={item.icon} />
+          </TouchableOpacity>
 
-        <Text style={styles.label} numberOfLines={1} color={'#ffffff'}>
-          {item.name}
-        </Text>
-      </View>
-    ),
+          <Text style={styles.label} numberOfLines={1} color={'#ffffff'}>
+            {item.name}
+          </Text>
+        </View>
+      );
+    },
     [onSelect],
   );
+
+  const handleCreateNew = () => {
+    // sheetRef.current?.open();
+    // console.log('🚀 ~ handleCreateNew ~ sheetRef:', sheetRef);
+    navigation.navigate('CreateCategorySheet');
+  };
+
+  const handleCreateCategory = async category => {
+    // await CategoriesRepo.createCategory(category);
+    // refreshCategories(); // from your hook
+  };
 
   return (
     <View style={styles.container}>
@@ -68,6 +88,12 @@ export const CategoryGrid = React.memo(({ onSelect }: Props) => {
           />
         </View>
       )}
+      {/* <BottomSheetComponent ref={sheetRef}>
+        <CreateCategorySheet
+          sheetRef={sheetRef}
+          onCreate={handleCreateCategory}
+        />
+      </BottomSheetComponent> */}
     </View>
   );
 });

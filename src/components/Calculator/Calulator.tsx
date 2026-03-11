@@ -32,17 +32,15 @@ export const AmountCalculator = ({
   backgroundColor: string;
   bottomSheetRef: any;
   darkBackgroundColor: string;
-  amount: number;
-  setAmount: Dispatch<SetStateAction<number>>;
+  amount: number | string;
+  setAmount: Dispatch<SetStateAction<number | string>>;
 }) => {
-  console.log('🚀 ~ AmountCalculator ~ amount:', amount);
   const { expression, appendValue, deleteLast } = useCalculator({
     amount,
     setAmount,
   });
 
   const handlePress = (key: string) => {
-    console.log('🚀 ~ handlePress ~ key:', key);
     if (key === '⌫') {
       deleteLast();
       return;

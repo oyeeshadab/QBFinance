@@ -11,7 +11,6 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTransaction } from './useTransaction';
-import { useTheme } from '@theme/ThemeProvider';
 import { useStyle } from './styles';
 import { CategoryIcon } from '@components/FinanceTracker/Components/CategoryIconComponent';
 import { Toast } from '@components/Toast/Toast';
@@ -23,6 +22,8 @@ import { darkenHex, lightenHex } from '@utils/color';
 import { RouteProp } from '@react-navigation/native';
 
 import { RootStackParamList } from '@navigation/AppNavigator';
+import ActionButton from '@components/FinanceTracker/Components/ActionButton';
+import { BtnType } from '@app-types/index';
 
 type AddTransactionRouteProp = RouteProp<RootStackParamList, 'AddTransaction'>;
 
@@ -30,7 +31,6 @@ type Props = {
   route: AddTransactionRouteProp;
 };
 const AddTransaction: React.FC<Props> = ({ route }) => {
-  // const route = useRoute();
   const { item } = route?.params || {};
 
   const {
@@ -56,6 +56,8 @@ const AddTransaction: React.FC<Props> = ({ route }) => {
     currentGradient,
     selectedCategory,
     createTransaction,
+    deleteTransaction,
+    navigation,
   } = useTransaction(item);
   const styles = useStyle();
   const { hours, minutes, ampm } = getCurrentTime();
@@ -109,7 +111,7 @@ const AddTransaction: React.FC<Props> = ({ route }) => {
                 <CategoryIcon icon_name={selectedCategory?.icon} />
                 <TouchableOpacity activeOpacity={0.5} onPress={openBootomSheet}>
                   <Text weight="deliusR" variant="h1" style={styles.amount}>
-                    ₹{amount}
+                    ₹{amount || 0}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -138,7 +140,7 @@ const AddTransaction: React.FC<Props> = ({ route }) => {
                 <Text style={styles.plus}>+</Text>
               </TouchableOpacity>
 
-              <CategoryGrid onSelect={onColorPress} />
+              <CategoryGrid onSelect={onColorPress} navigation={navigation} />
             </ScrollView>
             <TouchableOpacity
               activeOpacity={0.5}
@@ -154,11 +156,17 @@ const AddTransaction: React.FC<Props> = ({ route }) => {
                 {buttonConfig.label}
               </Text>
             </TouchableOpacity>
+            {item && (
+              <ActionButton
+                title="Delete Trasaction"
+                onPress={() => deleteTransaction(item?.id)}
+                type={BtnType.DELETE}
+              />
+            )}
           </View>
         </View>
 
         <Toast message={toastMessage} visible={showToast} />
-        {/* </TouchableOpacity> */}
 
         <BottomSheetComponent ref={bottomSheetRef}>
           <AmountCalculator
@@ -169,7 +177,6 @@ const AddTransaction: React.FC<Props> = ({ route }) => {
             setAmount={setAmount}
           />
         </BottomSheetComponent>
-        {/* </KeyboardAvoidingView> */}
       </SafeAreaView>
     </View>
   );

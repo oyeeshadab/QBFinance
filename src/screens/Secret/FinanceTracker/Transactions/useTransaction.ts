@@ -9,12 +9,12 @@ import {
   GestureResponderEvent,
   TextInput,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const { width, height } = Dimensions.get('window');
 const CIRCLE_SIZE = 60;
 
 export const useTransaction = (item: Transaction | undefined) => {
-  console.log('🚀 ~ useTransaction ~ item:', item?.amount);
   const titleRef = useRef<TextInput>(null);
   const bottomSheetRef = useRef<BottomSheetRef>(null);
 
@@ -36,10 +36,10 @@ export const useTransaction = (item: Transaction | undefined) => {
   );
 
   const [title, setTitle] = useState(item?.title || '');
-  const [amount, setAmount] = useState(item?.amount || 0);
+  const [amount, setAmount] = useState(item?.amount || '');
   const [toastMessage, setToastMessage] = useState('');
   const [showToast, setShowToast] = useState(false);
-
+  const navigation = useNavigation();
   // Animation refs
   const ripplePos = useRef({ x: 0, y: 0 });
   const scaleAnim = useRef(new Animated.Value(0)).current;
@@ -61,8 +61,13 @@ export const useTransaction = (item: Transaction | undefined) => {
     bottomSheetRef.current?.open();
   };
 
+  const transactionAction = () => {
+    navigation.goBack();
+  };
+
   const onColorPress = useCallback(
     (color: Category, e: GestureResponderEvent) => {
+      console.log('🚀 ~ useTransaction ~ color:', color);
       const { pageX, pageY } = e.nativeEvent;
       if (selectedColor === color.color) return;
 
@@ -115,7 +120,11 @@ export const useTransaction = (item: Transaction | undefined) => {
       return { label: 'Select Category', disabled: true };
     if (!amount || Number(amount) <= 0)
       return { label: 'Add Amount', disabled: true };
-    return { label: 'Add Transaction', disabled: false };
+    return {
+      label: item ? 'Edit Transaction' : 'Add Transaction',
+      disabled: false,
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [title, selectedCategory, amount]);
 
   const createTransaction = async () => {
@@ -149,7 +158,14 @@ export const useTransaction = (item: Transaction | undefined) => {
     const result = item
       ? await TransactionRepo.updateTransaction(transactionPayload)
       : await TransactionRepo.createTransaction(transactionPayload);
+
+    transactionAction();
     return result;
+  };
+
+  const deleteTransaction = () => {
+    TransactionRepo.deleteTransaction({ id: item?.id });
+    transactionAction();
   };
 
   const getCurrentTime = () => {
@@ -193,5 +209,7 @@ export const useTransaction = (item: Transaction | undefined) => {
     currentGradient,
     selectedCategory,
     createTransaction,
+    deleteTransaction,
+    navigation,
   };
 };
