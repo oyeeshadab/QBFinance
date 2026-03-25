@@ -20,6 +20,7 @@ module.exports = {
           '@constants': './src/constants',
           '@types': './src/types',
           '@database': './src/database',
+          '@app-types': './src/types',
         },
       },
     ],

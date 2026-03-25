@@ -13,7 +13,7 @@ export const lightTheme = {
     buttonEnabled: '#0F0E0E',
     buttonDisabled: '#B0B0B0',
     backgroundSecondary: '#061E29',
-    soft: '#F63049',
+    delete: '#F63049',
     primary: '#D02752',
     accent: '#8A244B',
     dark: '#000000',

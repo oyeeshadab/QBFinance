@@ -50,8 +50,8 @@ export interface CurrentMonthTxResponse {
 }
 
 export interface Category {
-  id: number;
+  id?: number;
   name: string;
-  icon: string;
-  color: string;
+  icon?: string;
+  color?: string;
 }

@@ -126,7 +126,7 @@ export const useStyle = () =>
       justifyContent: 'center',
       elevation: 15,
       alignSelf: 'center',
-      bottom: 25,
+      bottom: 15,
     },
     moreBtn: {
       alignSelf: 'center',
@@ -147,4 +147,7 @@ export const useStyle = () =>
       borderColor: 'rgba(255,255,255,0.2)',
     },
     activePill: { backgroundColor: 'rgba(255,255,255,0.2)' },
+    loaderContainer: {
+      flex: 1,
+    },
   });

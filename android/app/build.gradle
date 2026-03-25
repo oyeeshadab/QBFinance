@@ -78,9 +78,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.otpverification"
+    namespace "com.quasarbytes.finance"
     defaultConfig {
-        applicationId "com.otpverification"
+        applicationId "com.quasarbytes.finance"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

@@ -97,15 +97,13 @@ export const useStyle = (theme: AppTheme) =>
       gap: 4,
     },
 
-    actionText: { color: '#fff', fontSize: 16 },
-
     txHeader: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       marginBottom: 10,
     },
 
-    txHeading: { color: '#fff', fontSize: 20, fontWeight: '600' },
+    txHeading: { color: '#fff', fontWeight: '600' },
     viewAll: { color: '#aaa' },
 
     txRow: {
@@ -140,26 +138,21 @@ export const useStyle = (theme: AppTheme) =>
       justifyContent: 'space-around',
     },
     buttonContainer: {
-      height: 45,
-      width: Dimensions.get('window').width - 40,
-      borderRadius: 10,
-      justifyContent: 'center',
-      elevation: 15,
-      backgroundColor: theme.colors.white,
-      paddingHorizontal: 10,
-    },
-    actionButtonContainer: {
-      flexDirection: 'row',
+      height: 25,
+      width: Dimensions.get('window').width / 4,
+      borderRadius: 2,
       justifyContent: 'center',
       alignItems: 'center',
+      elevation: 15,
+      backgroundColor: theme.colors.white,
     },
+
     bottomSheetWrapper: {
       backgroundColor: theme.colors.white,
       display: 'none',
     },
     sectionHeader: {
-      fontSize: 16,
-      marginVertical: 8,
+      fontSize: 12,
       color: theme.colors.black,
     },
     contentContainer: { paddingBottom: 160 },

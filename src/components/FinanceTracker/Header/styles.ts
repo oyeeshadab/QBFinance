@@ -45,4 +45,7 @@ export const useStyle = (theme: AppTheme) =>
       alignItems: 'center',
       justifyContent: 'center',
     },
+    buttons: {
+      marginHorizontal: 20,
+    },
   });

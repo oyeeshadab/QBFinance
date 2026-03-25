@@ -1,10 +1,10 @@
-import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import React, { useCallback } from 'react';
+import {
+  BottomTabBarProps,
+  createBottomTabNavigator,
+} from '@react-navigation/bottom-tabs';
 import CustomTabBar from './CustomTabBar';
 import { View, Text } from 'react-native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { RootStackParamList, SecretNavigator } from './SecretNavigator';
-import { BiometricGate } from '../security/BiometricGate';
 import FinanceTracker from '@screens/Secret/FinanceTracker/Home/FinanceTracker';
 
 const Tab = createBottomTabNavigator();
@@ -14,14 +14,15 @@ const Screen = ({ title }: { title: string }) => (
     <Text>{title}</Text>
   </View>
 );
-const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function BottomTabs() {
+  const renderTabBar = useCallback(
+    (props: BottomTabBarProps) => <CustomTabBar {...props} />,
+    [],
+  );
+
   return (
-    <Tab.Navigator
-      screenOptions={{ headerShown: false }}
-      tabBar={props => <CustomTabBar {...props} />}
-    >
+    <Tab.Navigator screenOptions={{ headerShown: false }} tabBar={renderTabBar}>
       <Tab.Screen name="FinanceHome" component={FinanceTracker} />
 
       <Tab.Screen name="Stats">{() => <Screen title="Stats" />}</Tab.Screen>
