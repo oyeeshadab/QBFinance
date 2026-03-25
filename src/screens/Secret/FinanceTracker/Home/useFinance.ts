@@ -16,8 +16,6 @@ export const useFinance = () => {
       let isActive = true;
       const fetchData = async () => {
         try {
-          // const wallet = await WaletRepo.getWalletBalance();
-
           const res: CurrentMonthTxResponse =
             await TransactionRepo.getCurrentMonthTransactions();
           if (isActive) {
@@ -61,22 +59,6 @@ export const useFinance = () => {
     setShowMoney(!showMoney);
   };
 
-  const TABS = ['Expend', 'Income', 'Loan'];
-  const CATEGORIES = [
-    { id: '1', name: 'Food', icon: '🍔' },
-    { id: '2', name: 'Social', icon: '☕' },
-    { id: '3', name: 'Traffic', icon: '🚗' },
-    { id: '4', name: 'Shopping', icon: '🛍️' },
-    { id: '5', name: 'Grocery', icon: '🏪' },
-    { id: '6', name: 'Education', icon: '🎓' },
-    { id: '7', name: 'Bills', icon: '🧾' },
-    { id: '8', name: 'Rentals', icon: '🏠' },
-    { id: '9', name: 'Medical', icon: '🏥' },
-    { id: '10', name: 'Investment', icon: '💼' },
-    { id: '11', name: 'Gift', icon: '🎁' },
-    { id: '12', name: 'Other', icon: '🙋' },
-  ];
-
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-IN', {
@@ -94,8 +76,6 @@ export const useFinance = () => {
     walletBalance,
     total_expense,
     total_income,
-    TABS,
-    CATEGORIES,
     formatDate,
   };
 };

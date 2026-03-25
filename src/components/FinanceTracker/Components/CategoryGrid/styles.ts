@@ -5,38 +5,72 @@ const { width } = Dimensions.get('window');
 export const ITEM_SIZE = width / 7;
 
 export const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
+  overlay: {
+    flex: 1,
+    backgroundColor: 'transparent',
+    // backgroundColor: 'rgba(0,0,0,0.5)',
   },
+  gradientContainer: {
+    height: '100%',
+    position: 'relative',
 
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
+
+    // borderColor: '#ffffff',
+  },
+  contentContainer: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: 'transparent',
+  },
+  listContent: {
+    // alignItems: 'center',
+    paddingBottom: 20,
+  },
   itemWrapper: {
     alignItems: 'center',
-    marginVertical: 6,
+    marginHorizontal: 8,
+    marginVertical: 12,
+    width: 60,
+  },
+  colorItem: {
+    width: 50,
+    height: 50,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  label: {
+    fontSize: 12,
+    textAlign: 'center',
+    width: 70,
   },
   loaderWrapper: {
-    alignItems: 'center',
-    marginVertical: 6,
-    height: 190,
+    flex: 1,
     justifyContent: 'center',
-  },
-
-  colorItem: {
-    width: ITEM_SIZE,
-    height: ITEM_SIZE,
-    borderRadius: 10,
     alignItems: 'center',
-    justifyContent: 'center',
-    margin: 5,
-  },
-
-  label: {
-    fontSize: 10,
-    textAlign: 'center',
-    width: ITEM_SIZE,
-    marginTop: 4,
+    minHeight: 200,
   },
   LottieIcon: {
-    width: 250,
-    height: 250,
+    width: 100,
+    height: 100,
+  },
+  categoryHeading: {
+    paddingHorizontal: 20,
+    marginTop: 20,
   },
 });

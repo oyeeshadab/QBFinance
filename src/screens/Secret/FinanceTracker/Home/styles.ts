@@ -103,7 +103,7 @@ export const useStyle = (theme: AppTheme) =>
       marginBottom: 10,
     },
 
-    txHeading: { color: '#fff', fontSize: 20, fontWeight: '600' },
+    txHeading: { color: '#fff', fontWeight: '600' },
     viewAll: { color: '#aaa' },
 
     txRow: {
@@ -138,14 +138,13 @@ export const useStyle = (theme: AppTheme) =>
       justifyContent: 'space-around',
     },
     buttonContainer: {
-      height: 45,
-      width: Dimensions.get('window').width - 40,
-      borderRadius: 10,
+      height: 25,
+      width: Dimensions.get('window').width / 4,
+      borderRadius: 2,
       justifyContent: 'center',
       alignItems: 'center',
       elevation: 15,
       backgroundColor: theme.colors.white,
-      paddingHorizontal: 10,
     },
 
     bottomSheetWrapper: {
@@ -153,8 +152,7 @@ export const useStyle = (theme: AppTheme) =>
       display: 'none',
     },
     sectionHeader: {
-      fontSize: 16,
-      marginVertical: 8,
+      fontSize: 12,
       color: theme.colors.black,
     },
     contentContainer: { paddingBottom: 160 },

@@ -26,7 +26,6 @@ export const useStyle = (theme: AppTheme) =>
     txIcon: {
       width: 40,
       height: 40,
-      // backgroundColor: theme.colors.secondaryBlack,
       borderRadius: 20,
       justifyContent: 'center',
       alignItems: 'center',

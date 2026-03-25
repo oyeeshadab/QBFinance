@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import {
+  NavigationContainer,
+  NavigatorScreenParams,
+} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { SecretNavigator } from './SecretNavigator';
-import { AppNavigator } from './AppNavigator';
+import { AppNavigator, AppStackParamList } from './AppNavigator';
 import { SecretUserRepo } from '../database/repository/secretLogin.repo';
-import { AppState, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import LottieView from 'lottie-react-native';
 import { BiometricGate } from '../security/BiometricGate';
 import BottomTabs from './BottomTabs';
@@ -15,7 +17,7 @@ export type RootStackParamList = {
   Home: undefined;
   Welcome: undefined;
   SecretNavigator: undefined;
-  AppNavigator: undefined;
+  AppNavigator: NavigatorScreenParams<AppStackParamList>;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -26,8 +28,7 @@ export const RootNavigator = () => {
   );
   SecretUserRepo.getKeepLoggedIn()
     .then(keepLoggedIn => {
-      // setIsSecretLoggedIn(keepLoggedIn);
-      // setIsSecretLoggedIn(keepLoggedIn);
+      setIsSecretLoggedIn(keepLoggedIn);
     })
     .catch(err => {
       console.error('Error fetching secret users:', err);
@@ -47,11 +48,8 @@ export const RootNavigator = () => {
   }
   return (
     <NavigationContainer>
-      {/* )} */}
-
       <Stack.Navigator
         screenOptions={{ headerShown: false }}
-        // initialRouteName={isSecretLoggedIn ? 'AppNavigator' : 'AppNavigator'}
         initialRouteName={isSecretLoggedIn ? 'SecretNavigator' : 'AppNavigator'}
       >
         <Stack.Screen name="SecretNavigator">

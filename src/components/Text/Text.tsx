@@ -33,7 +33,7 @@ interface Props extends TextProps {
 const AppText: React.FC<Props> = ({
   variant = 'body',
   size,
-  weight = 'pinstripeR',
+  weight = 'deliusR',
   color = '#000',
   center,
   right,

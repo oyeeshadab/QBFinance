@@ -10,6 +10,7 @@ import {
   TextInput,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { BottomSheetDisplayType } from '@app-types/Transactions.types';
 
 const { width, height } = Dimensions.get('window');
 const CIRCLE_SIZE = 60;
@@ -17,12 +18,15 @@ const CIRCLE_SIZE = 60;
 export const useTransaction = (item: Transaction | undefined) => {
   const titleRef = useRef<TextInput>(null);
   const bottomSheetRef = useRef<BottomSheetRef>(null);
-
+  const [loading, setLoading] = useState(true);
+  const [sheetType, setSheetType] = useState<BottomSheetDisplayType | null>(
+    null,
+  );
   const [type, setType] = useState<'expense' | 'income'>(
     item?.type || 'expense',
   );
-  const [selectedColor, setSelectedColor] = useState(
-    item?.category_color || '#000000',
+  const [selectedColor, setSelectedColor] = useState<string>(
+    item?.category_color || lightenHex('#6B6B6B'),
   );
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(
     item
@@ -37,7 +41,6 @@ export const useTransaction = (item: Transaction | undefined) => {
 
   const [title, setTitle] = useState(item?.title || '');
   const [amount, setAmount] = useState(item?.amount || '');
-  const [toastMessage, setToastMessage] = useState('');
   const [showToast, setShowToast] = useState(false);
   const navigation = useNavigation();
   // Animation refs
@@ -45,6 +48,19 @@ export const useTransaction = (item: Transaction | undefined) => {
   const scaleAnim = useRef(new Animated.Value(0)).current;
   const opacityAnim = useRef(new Animated.Value(1)).current;
   const nextColorRef = useRef('#000000');
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 100);
+  }, []);
+
+  useEffect(() => {
+    if (showToast) {
+      const timer = setTimeout(() => setShowToast(false), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [showToast]);
 
   const getMaxScale = (x: number, y: number) => {
     const distances = [
@@ -56,9 +72,10 @@ export const useTransaction = (item: Transaction | undefined) => {
     return Math.max(...distances) / (CIRCLE_SIZE / 2);
   };
 
-  const openBootomSheet = () => {
+  const openBootomSheet = (displayType: BottomSheetDisplayType) => {
     titleRef.current?.blur();
     bottomSheetRef.current?.open();
+    setSheetType(displayType);
   };
 
   const transactionAction = () => {
@@ -67,14 +84,13 @@ export const useTransaction = (item: Transaction | undefined) => {
 
   const onColorPress = useCallback(
     (color: Category, e: GestureResponderEvent) => {
-      console.log('🚀 ~ useTransaction ~ color:', color);
       const { pageX, pageY } = e.nativeEvent;
       if (selectedColor === color.color) return;
 
-      setSelectedColor(color.color);
+      setSelectedColor(color?.color ?? selectedColor);
       setSelectedCategory(color);
 
-      nextColorRef.current = color.color;
+      nextColorRef.current = color.color || '#000000';
 
       ripplePos.current = {
         x: pageX - CIRCLE_SIZE / 2,
@@ -103,13 +119,6 @@ export const useTransaction = (item: Transaction | undefined) => {
     [scaleAnim, opacityAnim, selectedColor],
   );
 
-  useEffect(() => {
-    if (showToast) {
-      const timer = setTimeout(() => setShowToast(false), 2000);
-      return () => clearTimeout(timer);
-    }
-  }, [showToast]);
-
   const handlePress = () => {
     titleRef.current?.focus();
   };
@@ -121,7 +130,7 @@ export const useTransaction = (item: Transaction | undefined) => {
     if (!amount || Number(amount) <= 0)
       return { label: 'Add Amount', disabled: true };
     return {
-      label: item ? 'Edit Transaction' : 'Add Transaction',
+      label: item ? 'Update Transaction' : 'Add Transaction',
       disabled: false,
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -133,19 +142,18 @@ export const useTransaction = (item: Transaction | undefined) => {
       return;
     }
     if (!selectedCategory?.id) {
-      setToastMessage('Select a category');
-      setShowToast(true);
+      openBootomSheet(BottomSheetDisplayType.CATEGORY);
       return;
     }
     if (!amount || Number(amount) <= 0) {
-      openBootomSheet();
+      openBootomSheet(BottomSheetDisplayType.AMOUNT);
       return;
     }
     if (buttonConfig.disabled) return;
 
     const transactionPayload = {
       title,
-      amount: Number(amount),
+      amount: Number(amount) || 5000,
       type,
       category_id: selectedCategory.id,
       category_icon: selectedCategory.icon,
@@ -182,7 +190,11 @@ export const useTransaction = (item: Transaction | undefined) => {
   };
 
   const currentGradient = useMemo(
-    () => [lightenHex(selectedColor), darkenHex(selectedColor), '#000000'],
+    () => [
+      darkenHex(darkenHex(selectedColor)),
+      darkenHex(darkenHex(darkenHex(selectedColor))),
+      '#000000',
+    ],
     [selectedColor],
   );
 
@@ -194,11 +206,9 @@ export const useTransaction = (item: Transaction | undefined) => {
     titleRef,
     setTitle,
     ripplePos,
-    showToast,
     setAmount,
     scaleAnim,
     opacityAnim,
-    toastMessage,
     nextColorRef,
     buttonConfig,
     onColorPress,
@@ -207,9 +217,10 @@ export const useTransaction = (item: Transaction | undefined) => {
     getCurrentTime,
     openBootomSheet,
     currentGradient,
-    selectedCategory,
     createTransaction,
     deleteTransaction,
     navigation,
+    loading,
+    sheetType,
   };
 };

@@ -14,6 +14,7 @@ prepare_react_native_project!
   pod 'FirebaseCoreInternal', :modular_headers => true
   pod 'GoogleUtilities', :modular_headers => true
   pod 'FirebaseCore', :modular_headers => true
+  pod 'react-native-config', :path => '../node_modules/react-native-config'
 
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
@@ -21,7 +22,7 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
-target 'OtpVerification' do
+target 'QBFinance' do
   config = use_native_modules!
 
   use_react_native!(

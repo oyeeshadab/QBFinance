@@ -1,7 +1,6 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import TargetList from '../screens/Secret/Target/TargetList';
-import { BiometricGate } from '../security/BiometricGate';
 import FinanceTracker from '@screens/Secret/FinanceTracker/Home/FinanceTracker';
 
 export type RootStackParamList = {

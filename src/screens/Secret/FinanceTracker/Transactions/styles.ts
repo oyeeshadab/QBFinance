@@ -147,4 +147,7 @@ export const useStyle = () =>
       borderColor: 'rgba(255,255,255,0.2)',
     },
     activePill: { backgroundColor: 'rgba(255,255,255,0.2)' },
+    loaderContainer: {
+      flex: 1,
+    },
   });

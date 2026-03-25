@@ -1,15 +1,15 @@
 {
   "project_info": {
     "project_number": "168219011291",
-    "project_id": "qb-otpverification",
-    "storage_bucket": "qb-otpverification.firebasestorage.app"
+    "project_id": "com.quasarbytes.finance",
+    "storage_bucket": "com.quasarbytes.finance.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
         "mobilesdk_app_id": "1:168219011291:android:334ffa4affbec1f25f44fe",
         "android_client_info": {
-          "package_name": "com.otpverification"
+          "package_name": "com.quasarbytes.finance"
         }
       },
       "oauth_client": [],
