@@ -1,5 +1,6 @@
 import { CurrentMonthTxResponse, Transaction } from '@database/types';
 import { getDB } from '../db';
+import { TransactionSMSRepo } from './transactionsSMS.repo';
 
 export const TransactionRepo = {
   createTransaction: async (payload: Transaction) => {
@@ -21,7 +22,9 @@ export const TransactionRepo = {
           datetime,
         ],
       );
-
+      if (payload.smsType) {
+        TransactionSMSRepo.deleteSMSTransaction(payload);
+      }
       return {
         success: true,
         insertId: res[0].insertId,

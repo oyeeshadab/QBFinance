@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 
 export const useTransactionTypeToggle = ({ type }) => {
-  console.log('🚀 ~ useTransactionTypeToggle ~ type:', type, 'Shadab');
   const [width, setWidth] = useState(0);
   // const [type, setType] = useState<'expense' | 'income'>('expense');
   const translateX = useRef(new Animated.Value(0)).current;

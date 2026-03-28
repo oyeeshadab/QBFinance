@@ -38,7 +38,6 @@ export const useCreateCategory = () => {
         if (res?.success) {
           navigation.goBack();
         }
-        console.log('🚀 ~ createCategory ~ res:', res);
       });
     }
   };

@@ -61,6 +61,14 @@ export const runMigrations = async () => {
     );
   `);
 
+  await db.executeSql(`
+    CREATE TABLE IF NOT EXISTS transactionSMS (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      isDeleted INTEGER DEFAULT 0,
+      dateTime TEXT NOT NULL UNIQUE
+    );
+  `);
+
   const defaultCategories = [
     ['Groceries', 'Grocery', 'Ionicons', '#C4B6E9'],
     ['Shopping', 'Shopping', 'Feather', '#BE96FA'],

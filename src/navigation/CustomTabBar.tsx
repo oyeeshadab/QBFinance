@@ -56,7 +56,7 @@ export default function CustomTabBar({ state, navigation }: BottomTabBarProps) {
       case 'Stats':
         return <Feather name="bar-chart-2" size={size} color={color} />;
 
-      case 'Chat':
+      case 'TransMessage':
         return <Ionicons name="chatbubble-outline" size={size} color={color} />;
 
       default:

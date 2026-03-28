@@ -16,6 +16,7 @@ const CategoryIconComponent = ({
   size = 45,
   color = '#000',
 }: Props) => {
+  console.log('🚀 ~ CategoryIconComponent ~ icon_name:', icon_name);
   const IconComponent = useMemo(() => {
     if (!icon_name || !(icon_name in Icons)) {
       return Icons[DEFAULT_ICON];

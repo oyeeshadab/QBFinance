@@ -34,6 +34,21 @@ export interface Transaction {
   category_name?: string;
   category_icon?: string;
   category_color?: string;
+  smsType?: boolean;
+}
+export interface SMSTransaction {
+  id?: number;
+  dateTime?: string;
+  datetime?: string;
+  amount: number;
+  type: TransactionType;
+  category_id?: number;
+  note?: string;
+  category_name?: string;
+  category_icon?: string;
+  category_color?: string;
+  smsType?: boolean;
+  isDeleted?: boolean;
 }
 
 export interface TransactionSection {

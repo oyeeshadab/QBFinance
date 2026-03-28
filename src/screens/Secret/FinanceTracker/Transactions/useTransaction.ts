@@ -130,7 +130,9 @@ export const useTransaction = (item: Transaction | undefined) => {
     if (!amount || Number(amount) <= 0)
       return { label: 'Add Amount', disabled: true };
     return {
-      label: item ? 'Update Transaction' : 'Add Transaction',
+      label: item?.hasOwnProperty('category_color')
+        ? 'Update Transaction'
+        : 'Add Transaction',
       disabled: false,
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -160,10 +162,12 @@ export const useTransaction = (item: Transaction | undefined) => {
       category_color: selectedCategory.color,
       note: '',
       datetime: item?.datetime,
+      dateTime: item?.dateTime,
       id: item?.id, // undefined for create
+      smsType: item?.smsType || false,
     };
 
-    const result = item
+    const result = item?.hasOwnProperty('category_color')
       ? await TransactionRepo.updateTransaction(transactionPayload)
       : await TransactionRepo.createTransaction(transactionPayload);
 
@@ -213,6 +217,7 @@ export const useTransaction = (item: Transaction | undefined) => {
     buttonConfig,
     onColorPress,
     selectedColor,
+    selectedCategory,
     bottomSheetRef,
     getCurrentTime,
     openBootomSheet,
