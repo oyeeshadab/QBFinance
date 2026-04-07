@@ -6,8 +6,10 @@ import { HomeScreen } from '../screens/Home/HomeScreen';
 import WelcomeScreen from '../screens/Welcome/WelcomeScreen';
 import AddTransaction from '@screens/Secret/FinanceTracker/Transactions/AddTransactionScreen';
 import { Platform } from 'react-native';
-import { Transaction } from '@database/types';
+import { Category, Transaction } from '@database/types';
 import CreateCategorySheet from '@screens/Secret/FinanceTracker/Category/CreateCategorySheet';
+import Profile from '@screens/Secret/FinanceTracker/Profile/Profile';
+import CategoryLists from '@screens/Secret/FinanceTracker/Category/CategoryLists';
 
 export type AppStackParamList = {
   Login: undefined;
@@ -16,7 +18,9 @@ export type AppStackParamList = {
   Welcome: undefined;
   SecretNavigator: undefined;
   AddTransaction: { item?: Transaction };
-  CreateCategorySheet: undefined;
+  CreateCategorySheet: undefined | { item: Category | null };
+  Profile: undefined;
+  CategoryLists: undefined;
 };
 
 const Stack = createNativeStackNavigator<AppStackParamList>();
@@ -41,6 +45,8 @@ export const AppNavigator = () => {
         }}
       />
       <Stack.Screen name="OtpVerification" component={OtpVerificationScreen} />
+      <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="CategoryLists" component={CategoryLists} />
       <Stack.Screen
         name="Home"
         component={HomeScreen}

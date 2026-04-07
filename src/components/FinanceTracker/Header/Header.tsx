@@ -1,5 +1,5 @@
 import { View, TouchableOpacity, Pressable } from 'react-native';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useTheme } from '@theme/ThemeProvider';
 import { useStyle } from './styles';
 import Text from '@components/Text/Text';
@@ -12,13 +12,17 @@ interface Props {
   deleteButton: boolean;
   showProfile: boolean;
   welcomeText: boolean;
+  noPadding: boolean;
   deleteFun: () => void;
+  title: string;
 }
 const Header = ({
   backButton,
   deleteButton,
   showProfile = false,
   welcomeText = false,
+  noPadding = false,
+  title,
   deleteFun,
 }: Partial<Props>) => {
   const { theme } = useTheme();
@@ -27,13 +31,18 @@ const Header = ({
 
   return (
     <View style={styles.container}>
+      {title && (
+        <Text color={theme.colors.white} weight="deliusR" variant="h3">
+          {title}
+        </Text>
+      )}
       {backButton && (
         <Pressable
           onPress={() => {
             navigation.goBack();
           }}
           style={({ pressed }) => [
-            styles.buttons,
+            !noPadding && styles.buttons,
             { opacity: pressed ? 0.5 : 1 },
           ]}
         >
@@ -66,6 +75,11 @@ const Header = ({
           <TouchableOpacity
             activeOpacity={0.5}
             style={styles.profileImageContainer}
+            onPress={() => {
+              navigation.navigate('AppNavigator', {
+                screen: 'Profile',
+              });
+            }}
           >
             <Text style={{ color: 'white' }}>SH</Text>
           </TouchableOpacity>

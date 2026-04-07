@@ -1,5 +1,6 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import { AppTheme } from '../../theme/themes';
+const { width, height } = Dimensions.get('window');
 
 export const useStyle = (theme: AppTheme) =>
   StyleSheet.create({
@@ -9,7 +10,6 @@ export const useStyle = (theme: AppTheme) =>
     },
     padding: {
       paddingHorizontal: 20,
-      paddingTop: 20,
     },
 
     financeContainer: {
@@ -52,5 +52,12 @@ export const useStyle = (theme: AppTheme) =>
       right: 100,
       top: -150,
       opacity: 0.7,
+    },
+    lottie: {
+      height: 300,
+      width: 300,
+      position: 'absolute',
+      top: height / 2 - 150,
+      left: width / 2 - 150,
     },
   });

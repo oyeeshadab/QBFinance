@@ -8,7 +8,7 @@ import {
   View,
 } from 'react-native';
 import Text from '@components/Text/Text';
-import { CategoryIcon } from '../CategoryIconComponent';
+import { CategoryIcon, IconName } from '../CategoryIconComponent';
 import { useCategoryGrid } from './useCategoryGrid';
 import { styles } from './styles';
 import LottieView from 'lottie-react-native';
@@ -66,7 +66,7 @@ export const CategoryGrid = React.memo(
                 }
                 style={[styles.colorItem, { backgroundColor: item.color }]}
               >
-                <CategoryIcon size={35} icon_name={item.icon} />
+                <CategoryIcon size={35} icon_name={item?.icon as IconName} />
               </TouchableOpacity>
               <Text style={styles.label} numberOfLines={1} color={'#ffffff'}>
                 {item.name}

@@ -99,13 +99,6 @@ export const useTargetList = () => {
 
   const renderItem = ({ item, index }: any) => {
     const anim = itemAnimations[index];
-    console.log('🚀 ~ renderItem ~ anim:', anim, item);
-
-    // const anim = itemAnimations[index];
-    // return (
-    // <>
-    // </>
-    // )
   };
 
   return {

@@ -38,6 +38,11 @@ type Props = {
 const AddTransaction: React.FC<Props> = ({ route }) => {
   const { item } = route?.params || {};
 
+  console.log(
+    '🚀 ~ AddTransaction ~ item:',
+    item?.hasOwnProperty('category_color'),
+    item,
+  );
   const {
     type,
     title,
@@ -53,6 +58,7 @@ const AddTransaction: React.FC<Props> = ({ route }) => {
     buttonConfig,
     onColorPress,
     selectedColor,
+    selectedCategory,
     bottomSheetRef,
     getCurrentTime,
     openBootomSheet,
@@ -76,7 +82,7 @@ const AddTransaction: React.FC<Props> = ({ route }) => {
         />
         <Header
           backButton
-          deleteButton={item && item.id !== -1}
+          deleteButton={item?.hasOwnProperty('category_color')}
           deleteFun={deleteTransaction}
         />
         <Animated.View
@@ -122,7 +128,9 @@ const AddTransaction: React.FC<Props> = ({ route }) => {
                 onPress={() => openBootomSheet(BottomSheetDisplayType.CATEGORY)}
               >
                 <CategoryIcon
-                  icon_name={(item?.category_icon || 'Default') as IconName}
+                  icon_name={
+                    (item?.category_icon || selectedCategory?.icon) as IconName
+                  }
                 />
               </Pressable>
               <Pressable

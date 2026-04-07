@@ -1,17 +1,22 @@
-import { View, Text, ActivityIndicator } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import React, { useRef, useState } from 'react';
 import ColorPicker from 'react-native-wheel-color-picker';
 
 const ColorPickerComponent = ({ setSelectedColorCat }) => {
   const pickerRef = useRef<any>(null);
 
-  //   const [currentColor, setCurrentColor] = useState('#ffffff');
+  const isFirstRender = useRef(true);
+
   const [swatchesOnly] = useState(false);
   const [swatchesLast] = useState(true);
   const [swatchesEnabled] = useState(true);
   const [disc] = useState(false);
 
   const onColorChange = (color: string) => {
+    if (isFirstRender.current) {
+      if (color.toLowerCase() === '#ffffff') return;
+    }
+
     setSelectedColorCat(color);
   };
 
@@ -20,24 +25,14 @@ const ColorPickerComponent = ({ setSelectedColorCat }) => {
   };
 
   return (
-    <View
-      style={{
-        marginVertical: 40,
-        borderWidth: 1,
-        borderColor: 'gray',
-        borderRadius: 10,
-        height: 400,
-        padding: 30,
-      }}
-    >
+    <View style={styles.container}>
       <ColorPicker
         ref={pickerRef}
-        // color={currentColor}
         swatchesOnly={swatchesOnly}
         onColorChange={onColorChange}
         onColorChangeComplete={onColorChangeComplete}
-        thumbSize={15}
-        sliderSize={15}
+        thumbSize={18} // slightly bigger for better UX
+        sliderSize={18}
         noSnap
         row={false}
         swatchesLast={swatchesLast}
@@ -46,10 +41,24 @@ const ColorPickerComponent = ({ setSelectedColorCat }) => {
         useNativeDriver={false}
         useNativeLayout={false}
       />
-
-      {/* <SomeButton onPress={() => pickerRef.current?.revert()} /> */}
     </View>
   );
 };
 
 export default ColorPickerComponent;
+
+const styles = StyleSheet.create({
+  container: {
+    marginVertical: 40,
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 10,
+    height: 400,
+    padding: 30,
+    shadowColor: '#000',
+    shadowOpacity: 0.06,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 4,
+  },
+});

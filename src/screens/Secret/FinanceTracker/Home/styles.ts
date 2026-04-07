@@ -155,9 +155,10 @@ export const useStyle = (theme: AppTheme) =>
       fontSize: 12,
       color: theme.colors.black,
     },
-    contentContainer: { paddingBottom: 160 },
+    contentContainer: { paddingBottom: Dimensions.get('window').height / 2.2 },
     transactionListContainer: {
-      maxHeight: Dimensions.get('window').height / 1.9,
+      // maxHeight: Dimensions.get('window').height / 1.9,
+      // paddingBottom: 100,
     },
     sectionHeaderContainer: {
       height: 40,

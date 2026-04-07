@@ -4,12 +4,14 @@ import { useTheme } from '../../theme/ThemeProvider';
 import { SafeAreaView as RNSafeAreaView } from 'react-native-safe-area-context';
 import { useStyle } from './styles';
 import LinearGradient from 'react-native-linear-gradient';
+import LottieView from 'lottie-react-native';
 
 type Props = {
   children: React.ReactNode;
   padding?: boolean;
   bubble?: boolean;
   useSafeArea?: boolean;
+  blob?: boolean;
 };
 
 const FinanceTrackerWrapper = ({
@@ -17,6 +19,7 @@ const FinanceTrackerWrapper = ({
   padding = false,
   bubble = false,
   useSafeArea = false,
+  blob = false,
 }: Props) => {
   const { theme } = useTheme();
   const styles = useStyle(theme);
@@ -33,7 +36,15 @@ const FinanceTrackerWrapper = ({
           />
         </>
       )}
-      <View style={padding && styles.padding}>{children}</View>
+      {blob && (
+        <LottieView
+          source={require('@assets/JSON/blob.json')}
+          style={styles.lottie}
+          autoPlay
+          loop
+        />
+      )}
+      <View style={[padding && styles.padding]}>{children}</View>
     </Container>
   );
 };

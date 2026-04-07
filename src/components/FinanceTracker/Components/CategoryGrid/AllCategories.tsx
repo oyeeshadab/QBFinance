@@ -1,20 +1,18 @@
 import * as Icons from '@assets/SVG';
 import React, { memo, useCallback } from 'react';
-import {
-  FlatList,
-  Pressable,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { FlatList, Pressable, View } from 'react-native';
 import Text from '@components/Text/Text';
 import { styles } from './styles';
-import LinearGradient from 'react-native-linear-gradient';
-import { lightenHex } from '@utils/color';
 
 type IconEntry = [string, React.FC<any>];
 
-const AllCategoriesComponent = ({ ref, setSelectedCategory }) => {
+const AllCategoriesComponent = ({
+  ref,
+  setSelectedCategory,
+}: {
+  ref: React.RefObject<{ close: () => void }>;
+  setSelectedCategory: (category: string) => void;
+}) => {
   const renderItem = useCallback(({ item }: { item: IconEntry }) => {
     const [name, IconComponent] = item;
 
@@ -34,30 +32,15 @@ const AllCategoriesComponent = ({ ref, setSelectedCategory }) => {
         {/*  */}
       </View>
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <>
-      {/* <View style={{ flex: 1 }} /> */}
-      <Pressable style={{ flex: 1 }} onPress={() => ref.current.close()} />
+      <Pressable style={styles.overlay} onPress={() => ref.current.close()} />
 
-      <View
-        style={{
-          backgroundColor: lightenHex('#000000'),
-          flex: 2,
-          alignItems: 'center',
-          borderTopLeftRadius: 30,
-          borderTopRightRadius: 30,
-        }}
-      >
-        {/* <LinearGradient
-          colors={['#559484', '#154B4F', '#003044']}
-          style={[
-            StyleSheet.absoluteFill,
-            { borderTopLeftRadius: 30, borderTopRightRadius: 30 },
-          ]}
-        /> */}
-        <View style={{ padding: 20, width: '100%' }}>
+      <View style={styles.allCategoryContiner}>
+        <View style={styles.allCategoryHading}>
           <Text size={25} numberOfLines={1} color="#fff" weight="deliusR">
             Select Icon
           </Text>
