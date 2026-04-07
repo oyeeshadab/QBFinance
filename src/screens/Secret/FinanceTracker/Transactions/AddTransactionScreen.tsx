@@ -127,11 +127,7 @@ const AddTransaction: React.FC<Props> = ({ route }) => {
                 style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1 }]}
                 onPress={() => openBootomSheet(BottomSheetDisplayType.CATEGORY)}
               >
-                <CategoryIcon
-                  icon_name={
-                    (item?.category_icon || selectedCategory?.icon) as IconName
-                  }
-                />
+                <CategoryIcon icon_name={selectedCategory?.icon as IconName} />
               </Pressable>
               <Pressable
                 style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1 }]}
