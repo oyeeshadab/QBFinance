@@ -44,7 +44,7 @@ const FinanceTrackerWrapper = ({
           loop
         />
       )}
-      <View style={padding && styles.padding}>{children}</View>
+      <View style={[padding && styles.padding]}>{children}</View>
     </Container>
   );
 };

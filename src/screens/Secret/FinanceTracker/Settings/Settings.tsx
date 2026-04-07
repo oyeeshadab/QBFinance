@@ -8,6 +8,7 @@ import {
   Alert,
   Linking,
   Platform,
+  Dimensions,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
@@ -17,6 +18,8 @@ import NeumorphicContainer from '@components/NeumorphicContainer/NeumorphicConta
 import BlurView from '@sbaiahmed1/react-native-blur';
 import Text from '@components/Text/Text';
 import { useTheme } from '@theme/ThemeProvider';
+import { runMigrations } from '@database/migrations';
+import { DatabaseManagerRepo } from '@database/repository/databasemanager.repo';
 
 interface SettingsScreenProps {
   userName?: string;
@@ -67,6 +70,17 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({
   const preferencesSettings = [
     {
       id: '4',
+      icon: 'logo-apple-ar',
+      title: 'Categories',
+      subtitle: 'Add/Edit categories.',
+      value: darkMode,
+      onPress: () =>
+        navigation.navigate('AppNavigator', {
+          screen: 'CategoryLists',
+        }),
+    },
+    {
+      id: '5',
       icon: 'moon-outline',
       title: 'Dark Mode',
       subtitle: 'Switch between light and dark theme',
@@ -75,14 +89,14 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({
       onValueChange: setDarkMode,
     },
     {
-      id: '5',
+      id: '6',
       icon: 'language-outline',
       title: 'Currency',
       subtitle: 'Indian Rupee (₹)',
       onPress: () => Alert.alert('Coming Soon', 'Change Currency'),
     },
     {
-      id: '6',
+      id: '7',
       icon: 'calendar-outline',
       title: 'First Day of Week',
       subtitle: 'Monday',
@@ -92,7 +106,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({
 
   const notificationSettings = [
     {
-      id: '7',
+      id: '8',
       icon: 'notifications-outline',
       title: 'Push Notifications',
       subtitle: 'Receive transaction alerts',
@@ -101,7 +115,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({
       onValueChange: setNotifications,
     },
     {
-      id: '8',
+      id: '9',
       icon: 'mail-outline',
       title: 'Email Notifications',
       subtitle: 'Receive weekly summaries',
@@ -110,7 +124,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({
       onValueChange: setEmailNotifications,
     },
     {
-      id: '9',
+      id: '10',
       icon: 'trending-up-outline',
       title: 'Weekly Report',
       subtitle: 'Get spending insights every week',
@@ -119,7 +133,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({
       onValueChange: setWeeklyReport,
     },
     {
-      id: '10',
+      id: '11',
       icon: 'alert-circle-outline',
       title: 'Spending Alerts',
       subtitle: 'Notify when spending exceeds budget',
@@ -131,7 +145,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({
 
   const dataSettings = [
     {
-      id: '11',
+      id: '12',
       icon: 'cloud-upload-outline',
       title: 'Auto Sync',
       subtitle: 'Automatically sync with cloud',
@@ -140,40 +154,46 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({
       onValueChange: setAutoSync,
     },
     {
-      id: '12',
+      id: '13',
       icon: 'download-outline',
       title: 'Export Data',
       subtitle: 'Export all transactions as CSV',
       onPress: () => Alert.alert('Export', 'Export your data?'),
     },
     {
-      id: '13',
+      id: '14',
       icon: 'trash-outline',
-      title: 'Clear Cache',
-      subtitle: 'Free up storage space',
+      title: 'Clear Data',
+      subtitle: 'Reset your transactions',
       onPress: () => {
-        Alert.alert('Clear Cache', 'Are you sure you want to clear cache?', [
-          { text: 'Cancel', style: 'cancel' },
-          {
-            text: 'Clear',
-            style: 'destructive',
-            onPress: () => Alert.alert('Success', 'Cache cleared'),
-          },
-        ]);
+        Alert.alert(
+          'Clear Data',
+          'Are you sure you want to clear data?\n Data fill not recover after clear data.',
+          [
+            { text: 'Cancel', style: 'cancel' },
+            {
+              text: 'Clear',
+              style: 'destructive',
+              onPress: async () => {
+                await DatabaseManagerRepo.dropDatabase();
+              },
+            },
+          ],
+        );
       },
     },
   ];
 
   const supportSettings = [
     {
-      id: '14',
+      id: '15',
       icon: 'help-circle-outline',
       title: 'Help Center',
       subtitle: 'FAQs and guides',
       onPress: () => Alert.alert('Coming Soon', 'Help Center'),
     },
     {
-      id: '15',
+      id: '16',
       icon: 'chatbubble-outline',
       title: 'Contact Support',
       subtitle: 'Get help from our team',
@@ -182,7 +202,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({
       },
     },
     {
-      id: '16',
+      id: '17',
       icon: 'star-outline',
       title: 'Rate Us',
       subtitle: 'Share your feedback',
@@ -195,7 +215,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({
       },
     },
     {
-      id: '17',
+      id: '18',
       icon: 'share-social-outline',
       title: 'Share App',
       subtitle: 'Invite friends to join',
@@ -205,7 +225,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({
 
   const aboutSettings = [
     {
-      id: '18',
+      id: '19',
       icon: 'information-circle-outline',
       title: 'About',
       subtitle: 'Version 1.0.0',
@@ -216,13 +236,13 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({
         ),
     },
     {
-      id: '19',
+      id: '20',
       icon: 'document-text-outline',
       title: 'Terms of Service',
       onPress: () => Alert.alert('Terms of Service', 'Coming soon'),
     },
     {
-      id: '20',
+      id: '21',
       icon: 'shield-checkmark-outline',
       title: 'Privacy Policy',
       onPress: () => Alert.alert('Privacy Policy', 'Coming soon'),
@@ -232,11 +252,11 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({
   const renderSection = (title: string, data: any[]) => (
     <NeumorphicContainer>
       <View style={styles.section}>
-        <BlurView
+        {/* <BlurView
           blurType="regular"
           blurAmount={Platform.OS === 'ios' ? 25 : 5}
           style={[StyleSheet.absoluteFill]}
-        />
+        /> */}
         <Text color={theme.colors.white} style={styles.sectionTitle}>
           {title}
         </Text>
@@ -313,11 +333,11 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({
         {/* User Info */}
         <NeumorphicContainer>
           <View style={styles.userInfoCard}>
-            <BlurView
+            {/* <BlurView
               blurType="regular"
               blurAmount={Platform.OS === 'ios' ? 25 : 5}
               style={[StyleSheet.absoluteFill]}
-            />
+            /> */}
             <View style={styles.userAvatar}>
               <Text color={theme.colors.white} style={styles.avatarText}>
                 {userName[0].toUpperCase()}
@@ -370,8 +390,9 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    paddingBottom: 120,
+    paddingBottom: Dimensions.get('window').height / 5,
   },
+
   header: {
     flexDirection: 'row',
     alignItems: 'center',

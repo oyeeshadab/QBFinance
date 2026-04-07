@@ -1,48 +1,43 @@
-import React, { useEffect, useState } from 'react';
-import Text from '@components/Text/Text';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
   StyleSheet,
   TouchableOpacity,
   TextInput,
-  ScrollView,
-  Animated,
   FlatList,
   Pressable,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useTransaction } from '@screens/Secret/FinanceTracker/Transactions/useTransaction';
-// import { useTransaction } from './useTransaction';
-// import { useStyle } from './styles';
-import { CategoryIcon } from '@components/FinanceTracker/Components/CategoryIconComponent';
+import {
+  CategoryIcon,
+  IconName,
+} from '@components/FinanceTracker/Components/CategoryIconComponent';
 import { Toast } from '@components/Toast/Toast';
-import BottomSheetComponent from '@components/BottomSheet/BottomSheetComponent';
-import { AmountCalculator } from '@components/Calculator/Calulator';
-import { TransactionTypeToggle } from '@components/TransactionTypeToggle/TransactionTypeToggle';
-import { CategoryGrid } from '@components/FinanceTracker/Components/CategoryGrid/CategoryGrid';
-import { darkenHex, lightenHex } from '@utils/color';
-import { RouteProp } from '@react-navigation/native';
-
-import { RootStackParamList } from '@navigation/AppNavigator';
+import BottomSheetComponent, {
+  BottomSheetRef,
+} from '@components/BottomSheet/BottomSheetComponent';
+import { darkenHex } from '@utils/color';
 import ActionButton from '@components/FinanceTracker/Components/ActionButton';
 import { BtnType } from '@app-types/index';
 import { useStyle } from './styles';
-import { useTheme } from '@theme/ThemeProvider';
-import Icon from 'react-native-vector-icons/Feather';
-import * as Icons from '@assets/SVG';
 import { AllCategoriesIcon } from '@components/FinanceTracker/Components/CategoryGrid/AllCategories';
 import { useCreateCategory } from './useCreateCategory';
 import ColorPickerComponent from '@components/ColorPicker/ColorPicker';
-type AddTransactionRouteProp = RouteProp<RootStackParamList, 'AddTransaction'>;
+import Header from '@components/FinanceTracker/Header/Header';
+import { useCategoryList } from './useCategoryList';
+import { useRoute } from '@react-navigation/native';
+import { Category } from '@database/types';
 
-type Props = {
-  route: AddTransactionRouteProp;
-};
-// const CreateCategorySheet: React.FC<Props> = ({ route }) => {
-export const CreateCategorySheet = ({ route }) => {
-  const { item } = route?.params || {};
+export const CreateCategorySheet = () => {
+  const route = useRoute();
+  const { item } = (route.params as { item?: Category }) || {};
+  const bottomSheetRef = useRef<BottomSheetRef>(null);
+
+  // const { item } = route?.params || {};
+  const isEditMode = item?.hasOwnProperty('id');
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
@@ -50,21 +45,6 @@ export const CreateCategorySheet = ({ route }) => {
   }, []);
 
   const {
-    title,
-
-    titleRef,
-    setTitle,
-    showToast,
-    toastMessage,
-    selectedColor,
-    bottomSheetRef,
-    currentGradient,
-    // selectedCategory,
-    navigation,
-  } = useTransaction();
-  const {
-    type,
-    setType,
     colors,
     categoryNameRef,
     categoryName,
@@ -73,29 +53,35 @@ export const CreateCategorySheet = ({ route }) => {
     selectedColorCat,
     setSelectedColorCat,
     createCategory,
+    updateCategory,
     selectedCategory,
     setSelectedCategory,
-  } = useCreateCategory();
-  const { theme } = useTheme();
-  const styles = useStyle(theme);
+  } = useCreateCategory(item);
+
+  const styles = useStyle();
+  const { deleteCategory } = useCategoryList();
+
+  const handleDelete = async (id: number) => {
+    await deleteCategory(id, true);
+  };
 
   return (
     <View style={styles.container}>
       <SafeAreaView style={{ flex: 1 }}>
         <LinearGradient
-          colors={currentGradient}
+          colors={['#1a1a2e', '#16213e', '#0f3460']}
           style={StyleSheet.absoluteFill}
         />
 
         <View style={styles.content}>
+          <Header
+            backButton
+            deleteButton={isEditMode}
+            deleteFun={() => handleDelete(item?.id!)}
+          />
+
           <View style={styles.content}>
             <View style={styles.scrollViewContent}>
-              <TransactionTypeToggle
-                selectedColor={selectedColor}
-                type={type}
-                setType={setType}
-              />
-
               <View style={styles.amountCard}>
                 <View style={styles.itemWrapper}>
                   <TouchableOpacity
@@ -106,16 +92,17 @@ export const CreateCategorySheet = ({ route }) => {
                       { backgroundColor: selectedColorCat },
                     ]}
                   >
-                    <CategoryIcon icon_name={selectedCategory} />
+                    <CategoryIcon icon_name={item?.icon as IconName} />
                   </TouchableOpacity>
                 </View>
+
                 <TextInput
                   ref={categoryNameRef}
                   value={categoryName}
                   style={styles.input}
                   placeholder="Category Name"
                   placeholderTextColor="rgba(255,255,255,0.5)"
-                  onChangeText={e => setCategoryName(e)}
+                  onChangeText={setCategoryName}
                 />
               </View>
 
@@ -137,14 +124,13 @@ export const CreateCategorySheet = ({ route }) => {
                         borderColor: darkenHex('#ffffff'),
                       },
                     ]}
-                    onPress={() => {
-                      setSelectedColorCat(item);
-                    }}
+                    onPress={() => setSelectedColorCat(item)}
                   />
                 )}
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={{ paddingHorizontal: 20 }}
               />
+
               <View style={{ paddingHorizontal: 20 }}>
                 <ColorPickerComponent
                   setSelectedColorCat={setSelectedColorCat}
@@ -152,14 +138,15 @@ export const CreateCategorySheet = ({ route }) => {
               </View>
             </View>
           </View>
+
           <ActionButton
             title={buttonConfig?.label}
-            onPress={createCategory}
-            type={BtnType.CREATE}
+            onPress={isEditMode ? updateCategory : createCategory}
+            type={BtnType.UPDATE}
           />
         </View>
 
-        <Toast message={toastMessage} visible={showToast} />
+        <Toast message="" visible={false} />
 
         {!loading && (
           <BottomSheetComponent ref={bottomSheetRef}>

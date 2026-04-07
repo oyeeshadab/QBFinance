@@ -50,12 +50,6 @@ const TransactionMessageItem = ({ item, handleDelete }: any) => {
   return (
     <NeumorphicContainer>
       <Swipeable renderRightActions={renderRightActions}>
-        <BlurView
-          blurType="regular"
-          blurAmount={Platform.OS === 'ios' ? 25 : 5}
-          style={StyleSheet.absoluteFill}
-        />
-
         <View style={styles.card}>
           <Text style={styles.amountText}>
             {extractAmountFromMessageBody(item.body) ?? 'No Amount'}

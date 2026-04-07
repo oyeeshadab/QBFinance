@@ -1,3 +1,4 @@
+import { lightenHex } from '@utils/color';
 import { StyleSheet, Dimensions } from 'react-native';
 
 const { width } = Dimensions.get('window');
@@ -73,4 +74,12 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 20,
     marginTop: 20,
   },
+  allCategoryContiner: {
+    backgroundColor: lightenHex('#000000'),
+    flex: 2,
+    alignItems: 'center',
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+  },
+  allCategoryHading: { padding: 20, width: '100%' },
 });

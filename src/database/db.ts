@@ -2,7 +2,7 @@ import SQLite from 'react-native-sqlite-storage';
 
 SQLite.enablePromise(true);
 
-const DB_NAME = 'QBSecretApp.db';
+export const DB_NAME = 'QBSecretApp.db';
 
 let dbInstance: SQLite.SQLiteDatabase | null = null;
 

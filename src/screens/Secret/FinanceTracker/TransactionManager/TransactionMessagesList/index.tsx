@@ -11,9 +11,16 @@ const TransactionMessagesList = () => {
   const { transactions, handleDelete } = useTransactionMessages();
 
   return (
-    <Wrapper padding useSafeArea bubble>
+    <Wrapper padding useSafeArea bubble blob>
       <Header title="Transaction Messages" showProfile />
-      {transactions.length === 0 && 2}
+      {transactions.length === 0 && (
+        <LottieView
+          source={require('@assets/JSON/notFound.json')}
+          autoPlay
+          loop
+          style={styles.lottie}
+        />
+      )}
 
       <FlatList
         data={transactions}
@@ -21,6 +28,7 @@ const TransactionMessagesList = () => {
         renderItem={({ item }) => (
           <TransactionMessageItem item={item} handleDelete={handleDelete} />
         )}
+        showsVerticalScrollIndicator={false}
         initialNumToRender={10}
         removeClippedSubviews
         contentContainerStyle={styles.contentContainerStyle}

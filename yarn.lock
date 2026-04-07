@@ -7095,6 +7095,11 @@ rimraf@^3.0.2:
   dependencies:
     glob "^7.1.3"
 
+rn-restart@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/rn-restart/-/rn-restart-1.0.1.tgz#0c7f44c35acb4280f09caa2ab5ab615e72295cd1"
+  integrity sha512-kjJ3wGaAnglTJEsp5KEkLNmDh26LHfoPxo2g0Ha5J8FwN4VZaWuOMCKiq2gdwecz1EJHpYRdUYTVlAPVeoBMBw==
+
 run-parallel@^1.1.9:
   version "1.2.0"
   resolved "https://registry.npmjs.org/run-parallel/-/run-parallel-1.2.0.tgz"

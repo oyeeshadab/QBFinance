@@ -150,4 +150,77 @@ export const TransactionRepo = {
       summary: summary[0].rows.item(0),
     };
   },
+
+  getTransactionsByPeriod: async (
+    period: 'week' | 'month' | 'year',
+    type?: 'income' | 'expense',
+  ) => {
+    const db = await getDB();
+
+    let dateCondition = '';
+    switch (period) {
+      case 'week':
+        dateCondition = "datetime >= date('now', '-7 days')";
+        break;
+      case 'month':
+        dateCondition = "datetime >= date('now', '-30 days')";
+        break;
+      case 'year':
+        dateCondition = "datetime >= date('now', '-365 days')";
+        break;
+    }
+
+    const typeCondition = type ? `AND type = '${type}'` : '';
+
+    const result = await db.executeSql(`
+    SELECT 
+      t.*,
+      c.name as category_name,
+      c.color as category_color,
+      c.icon as category_icon
+    FROM transactions t
+    LEFT JOIN categories c ON t.category_id = c.id
+    WHERE ${dateCondition}
+    ${typeCondition}
+    ORDER BY t.datetime DESC
+  `);
+
+    return result[0].rows.raw();
+  },
+
+  getCategoryBreakdown: async (
+    period: 'week' | 'month' | 'year',
+    type: 'income' | 'expense',
+  ) => {
+    const db = await getDB();
+
+    let dateCondition = '';
+    switch (period) {
+      case 'week':
+        dateCondition = "datetime >= date('now', '-7 days')";
+        break;
+      case 'month':
+        dateCondition = "datetime >= date('now', '-30 days')";
+        break;
+      case 'year':
+        dateCondition = "datetime >= date('now', '-365 days')";
+        break;
+    }
+
+    const result = await db.executeSql(`
+    SELECT 
+      c.name as category_name,
+      c.color as category_color,
+      SUM(t.amount) as total_amount
+    FROM transactions t
+    LEFT JOIN categories c ON t.category_id = c.id
+    WHERE ${dateCondition}
+    AND t.type = '${type}'
+    GROUP BY t.category_id
+    ORDER BY total_amount DESC
+    LIMIT 5
+  `);
+
+    return result[0].rows.raw();
+  },
 };

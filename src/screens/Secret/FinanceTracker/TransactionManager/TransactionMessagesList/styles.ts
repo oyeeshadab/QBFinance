@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   card: {
@@ -47,7 +47,7 @@ export const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
   },
-  contentContainerStyle: { paddingBottom: 160 },
+  contentContainerStyle: { paddingBottom: Dimensions.get('window').height / 5 },
   lottie: {
     height: 500,
     width: 500,

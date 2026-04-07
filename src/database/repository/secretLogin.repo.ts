@@ -24,11 +24,16 @@ export const SecretUserRepo = {
   },
 
   getKeepLoggedIn: async (): Promise<boolean> => {
-    const db = await getDB();
-    const res = await db.executeSql(
-      `SELECT keepLoggedIn FROM secretUser WHERE id = 1`,
-    );
-    const row = res[0].rows.item(0);
-    return row.keepLoggedIn === 1;
+    try {
+      const db = await getDB();
+      const res = await db.executeSql(
+        `SELECT keepLoggedIn FROM secretUser WHERE id = 1`,
+      );
+      const row = res[0].rows.item(0);
+      return row.keepLoggedIn === 1;
+    } catch (error) {
+      console.log('🚀 ~ error:', error);
+      return false;
+    }
   },
 };

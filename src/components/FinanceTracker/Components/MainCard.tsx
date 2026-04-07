@@ -36,11 +36,6 @@ const MainCard = ({
     <>
       <NeumorphicContainer>
         <View style={styles.card}>
-          <BlurView
-            blurType="regular"
-            blurAmount={Platform.OS === 'ios' ? 25 : 5}
-            style={[StyleSheet.absoluteFill]}
-          />
           <View>
             <Text style={styles.balanceLabel}>Total balance</Text>
             <View style={styles.balanceRow}>

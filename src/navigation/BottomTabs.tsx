@@ -4,19 +4,12 @@ import {
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
 import CustomTabBar from './CustomTabBar';
-import { View, Text } from 'react-native';
 import FinanceTracker from '@screens/Secret/FinanceTracker/Home/FinanceTracker';
 import TransactionMessagesList from '@screens/Secret/FinanceTracker/TransactionManager/TransactionMessagesList';
 import SettingsScreen from '@screens/Secret/FinanceTracker/Settings/Settings';
 import StatsScreen from '@screens/Secret/FinanceTracker/Stats/Stats';
 
 const Tab = createBottomTabNavigator();
-
-const Screen = ({ title }: { title: string }) => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <Text>{title}</Text>
-  </View>
-);
 
 export default function BottomTabs() {
   const renderTabBar = useCallback(

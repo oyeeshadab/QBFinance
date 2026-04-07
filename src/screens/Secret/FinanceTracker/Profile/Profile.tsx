@@ -116,11 +116,11 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
         {/* Profile Info */}
         <NeumorphicContainer>
           <View style={styles.profileSection}>
-            <BlurView
+            {/* <BlurView
               blurType="regular"
               blurAmount={Platform.OS === 'ios' ? 25 : 5}
               style={[StyleSheet.absoluteFill]}
-            />
+            /> */}
             <View style={styles.avatarContainer}>
               {userAvatar ? (
                 <Image source={{ uri: userAvatar }} style={styles.avatar} />
@@ -183,11 +183,11 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
         {/* Menu Items */}
         <NeumorphicContainer>
           <View style={styles.menuSection}>
-            <BlurView
+            {/* <BlurView
               blurType="regular"
               blurAmount={Platform.OS === 'ios' ? 25 : 5}
               style={[StyleSheet.absoluteFill]}
-            />
+            /> */}
             <Text color={theme.colors.white} style={styles.sectionTitle}>
               Settings
             </Text>

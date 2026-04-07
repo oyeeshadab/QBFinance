@@ -5,7 +5,9 @@ import { useMemo, useRef, useState } from 'react';
 import { TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-export const useCreateCategory = () => {
+export const useCreateCategory = (item: Category) => {
+  const isEditMode = item?.hasOwnProperty('id');
+
   const categoryNameRef = useRef<TextInput>(null);
   const navigation = useNavigation();
   const colors = [
@@ -16,10 +18,16 @@ export const useCreateCategory = () => {
     '#FBBF24',
     '#F87171',
   ];
-  const [selectedColorCat, setSelectedColorCat] = useState<string>('');
+  const [selectedColorCat, setSelectedColorCat] = useState(
+    isEditMode ? item?.color : '',
+  );
   const [type, setType] = useState<'expense' | 'income'>('expense');
-  const [selectedCategory, setSelectedCategory] = useState('Default');
-  const [categoryName, setCategoryName] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState(
+    isEditMode ? item?.icon : 'Default',
+  );
+  const [categoryName, setCategoryName] = useState(
+    isEditMode ? item?.name : '',
+  );
 
   const handlePress = () => {
     categoryNameRef.current?.focus();
@@ -42,18 +50,39 @@ export const useCreateCategory = () => {
     }
   };
 
+  const updateCategory = async () => {
+    if (!categoryName.trim()) {
+      handlePress();
+      return;
+    } else {
+      CategoriesRepo.updateCategory({
+        id: item.id,
+        name: categoryName,
+        icon: selectedCategory,
+        color: selectedColorCat,
+      } as Category).then(res => {
+        if (res?.success) {
+          navigation.goBack();
+        }
+      });
+    }
+  };
+
+  const deleteCategory = async () => {
+    const id = item.id || -1;
+    CategoriesRepo.deleteCategory(id).then(res => {
+      if (res?.success) {
+        navigation.goBack();
+      }
+    });
+  };
+
   const buttonConfig = useMemo(() => {
     if (!categoryName.trim())
       return { label: 'Add Category Name', disabled: true };
+    if (isEditMode) return { label: 'Update Category', disabled: true };
     return { label: 'Create Category', disabled: true };
-    // if (!selectedCategory?.id)
-    //   return { label: 'Select Category', disabled: true };
-    // if (!amount || Number(amount) <= 0)
-    //   return { label: 'Add Amount', disabled: true };
-    // return {
-    //   label: item ? 'Edit Transaction' : 'Add Transaction',
-    //   disabled: false,
-    // };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryName]);
 
   return {
@@ -68,6 +97,8 @@ export const useCreateCategory = () => {
     categoryNameRef,
     categoryName,
     createCategory,
+    updateCategory,
+    deleteCategory,
     buttonConfig,
   };
 };
