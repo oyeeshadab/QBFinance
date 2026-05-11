@@ -20,10 +20,6 @@ const StatsScreen = () => {
     setSelectedPeriod,
     selectedTab,
     setSelectedTab,
-    weeklyData,
-    monthlyData,
-    yearlyData,
-    incomeData,
     expenseBreakdown,
     incomeBreakdown,
     getTotalAmount,
@@ -125,7 +121,7 @@ const StatsScreen = () => {
           <NeumorphicContainer>
             <View style={styles.statCard}>
               <Text color={theme.colors.white} style={styles.statLabel}>
-                Total {selectedTab === 'expense' ? 'Spent' : 'Earned'}
+                Average {selectedTab === 'expense' ? 'Spent' : 'Earned'}
               </Text>
               <Text color={theme.colors.white} style={styles.statValue}>
                 ₹{getAverageAmount().toLocaleString()}
@@ -135,7 +131,7 @@ const StatsScreen = () => {
           <NeumorphicContainer>
             <View style={styles.statCard}>
               <Text color={theme.colors.white} style={styles.statLabel}>
-                Total {selectedTab === 'expense' ? 'Spent' : 'Earned'}
+                Highest {selectedTab === 'expense' ? 'Spent' : 'Earned'}
               </Text>
               <Text color={theme.colors.white} style={styles.statValue}>
                 ₹{getHighestAmount().toLocaleString()}
@@ -153,9 +149,9 @@ const StatsScreen = () => {
                   ? 'Expense Breakdown'
                   : 'Income Sources'}
               </Text>
-              <Pressable>
+              {/* <Pressable>
                 <Text style={styles.viewAllText}>View All</Text>
-              </Pressable>
+              </Pressable> */}
             </View>
 
             <View style={styles.pieChartContainer}>
@@ -204,7 +200,7 @@ const StatsScreen = () => {
         </NeumorphicContainer>
 
         {/* Monthly Summary */}
-        <NeumorphicContainer>
+        {/* <NeumorphicContainer>
           <View style={styles.summaryCard}>
             <Text color={theme.colors.white} style={styles.summaryTitle}>
               Monthly Summary
@@ -241,13 +237,14 @@ const StatsScreen = () => {
               </View>
             </View>
           </View>
-        </NeumorphicContainer>
+        </NeumorphicContainer> */}
 
         {/* Top Categories */}
         <NeumorphicContainer>
           <View style={styles.topCategoriesCard}>
             <Text style={styles.topCategoriesTitle} color={theme.colors.white}>
-              Top Spending Categories
+              Top {selectedTab === 'expense' ? 'Spending' : 'Earning'}{' '}
+              Categories
             </Text>
             {expenseBreakdown.slice(0, 3).map((item, index) => (
               <View key={index} style={styles.categoryItem}>
@@ -259,7 +256,14 @@ const StatsScreen = () => {
                     {item.name}
                   </Text>
                 </View>
-                <Text style={styles.categoryAmount}>
+                <Text
+                  style={styles.categoryAmount}
+                  color={
+                    selectedTab === 'expense'
+                      ? theme.colors.red
+                      : theme.colors.green
+                  }
+                >
                   ₹{item.amount.toLocaleString()}
                 </Text>
               </View>

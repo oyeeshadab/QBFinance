@@ -6,7 +6,7 @@ const { width, height } = Dimensions.get('window');
 export const useStyle = (theme: AppTheme) =>
   StyleSheet.create({
     container: {
-      flex: 1,
+      height: '100%',
     },
 
     blobBig: {
@@ -45,14 +45,7 @@ export const useStyle = (theme: AppTheme) =>
       justifyContent: 'center',
       alignItems: 'center',
       paddingHorizontal: 28,
-    },
-
-    title: {
-      fontSize: 36,
-      fontWeight: '900',
-      color: theme.colors.primary,
-      marginBottom: 16,
-      letterSpacing: 0.5,
+      height: 300,
     },
 
     subtitle: {
@@ -60,7 +53,7 @@ export const useStyle = (theme: AppTheme) =>
       color: theme.colors.inputBackground,
       textAlign: 'center',
       lineHeight: 24,
-      marginBottom: 50,
+      marginBottom: 10,
     },
 
     featureBox: {
@@ -119,5 +112,24 @@ export const useStyle = (theme: AppTheme) =>
 
     touchWrapper: {
       zIndex: 1,
+    },
+    inputContainer: {
+      width: '100%',
+      alignSelf: 'center',
+    },
+    errorText: {
+      marginBottom: 10,
+      fontSize: 12,
+      marginTop: -10,
+    },
+    input: {
+      backgroundColor: 'rgba(255,255,255,0.12)',
+      marginBottom: 16,
+      borderRadius: 14,
+      padding: 16,
+      color: '#FFF',
+      borderWidth: 1,
+      borderColor: 'rgba(255,255,255,0.2)',
+      width: '100%',
     },
   });

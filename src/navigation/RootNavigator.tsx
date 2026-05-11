@@ -5,11 +5,11 @@ import {
 } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AppNavigator, AppStackParamList } from './AppNavigator';
-import { SecretUserRepo } from '../database/repository/secretLogin.repo';
 import { StyleSheet, View } from 'react-native';
 import LottieView from 'lottie-react-native';
 import { BiometricGate } from '../security/BiometricGate';
 import BottomTabs from './BottomTabs';
+import { UserRepo } from '@database/repository/user.repo';
 
 export type RootStackParamList = {
   Login: undefined;
@@ -24,17 +24,26 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export const RootNavigator = () => {
   const [isSecretLoggedIn, setIsSecretLoggedIn] = useState<boolean | null>(
-    true,
+    null,
   );
-  SecretUserRepo.getKeepLoggedIn()
-    .then(keepLoggedIn => {
-      setIsSecretLoggedIn(keepLoggedIn);
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState<boolean | null>(null);
+  UserRepo.getCurrentLoggedInUser()
+    .then(user => {
+      if (user?.hasOwnProperty('email')) {
+        setIsUserLoggedIn(true);
+        if (user?.isFingerprintEnable) {
+          setIsSecretLoggedIn(true);
+        }
+      } else {
+        setIsUserLoggedIn(false);
+      }
+      console.log('getCurrentLoggedInUsergetCurrentLoggedInUser', user);
     })
     .catch(err => {
-      console.error('Error fetching secret users:', err);
+      console.error('Error fetching current logged in user:', err);
     });
 
-  if (isSecretLoggedIn === null) {
+  if (isUserLoggedIn === null) {
     return (
       <View style={styles.container}>
         <LottieView
@@ -50,14 +59,22 @@ export const RootNavigator = () => {
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{ headerShown: false }}
-        initialRouteName={isSecretLoggedIn ? 'SecretNavigator' : 'AppNavigator'}
+        initialRouteName={
+          isUserLoggedIn || isSecretLoggedIn
+            ? 'SecretNavigator'
+            : 'AppNavigator'
+        }
       >
         <Stack.Screen name="SecretNavigator">
-          {() => (
-            <BiometricGate>
+          {() =>
+            isSecretLoggedIn ? (
+              <BiometricGate>
+                <BottomTabs />
+              </BiometricGate>
+            ) : (
               <BottomTabs />
-            </BiometricGate>
-          )}
+            )
+          }
         </Stack.Screen>
         <Stack.Screen name="AppNavigator" component={AppNavigator} />
       </Stack.Navigator>

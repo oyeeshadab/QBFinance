@@ -19,9 +19,6 @@ import {
 } from 'react-native-vision-camera';
 
 import { useFocusEffect } from '@react-navigation/native';
-// import { authStack } from '../../config/navigator';
-// import { useDispatch } from 'react-redux';
-// import { getEventsByQR } from '../../redux/slices/QRCodeSlice';
 
 import { launchImageLibrary } from 'react-native-image-picker';
 

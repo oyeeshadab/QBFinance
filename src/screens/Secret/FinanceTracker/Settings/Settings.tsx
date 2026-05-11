@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -15,21 +15,20 @@ import { useNavigation } from '@react-navigation/native';
 import FinanceTrackerWrapper from '@components/Wrapper/FinanceTrackerWrapper';
 import Header from '@components/FinanceTracker/Header/Header';
 import NeumorphicContainer from '@components/NeumorphicContainer/NeumorphicContainer';
-import BlurView from '@sbaiahmed1/react-native-blur';
 import Text from '@components/Text/Text';
 import { useTheme } from '@theme/ThemeProvider';
-import { runMigrations } from '@database/migrations';
 import { DatabaseManagerRepo } from '@database/repository/databasemanager.repo';
+import { UserRepo } from '@database/repository/user.repo';
+import { User } from '@database/types';
 
 interface SettingsScreenProps {
   userName?: string;
 }
 
-const SettingsScreen: React.FC<SettingsScreenProps> = ({
-  userName = 'Shadab',
-}) => {
+const SettingsScreen: React.FC<SettingsScreenProps> = () => {
   const navigation = useNavigation();
   const { theme } = useTheme();
+  const [user, setUser] = useState<User | null>(null);
 
   // State for settings
   const [notifications, setNotifications] = useState(true);
@@ -39,6 +38,18 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [weeklyReport, setWeeklyReport] = useState(true);
   const [spendingAlerts, setSpendingAlerts] = useState(true);
+
+  useEffect(() => {
+    UserRepo.getCurrentLoggedInUser().then(userVal => {
+      setUser(userVal);
+      setBiometricLogin(userVal?.isFingerprintEnable === 1);
+    });
+  }, [UserRepo]);
+  const biometricUpdate = (value: boolean) => {
+    console.log('🚀 ~ biometricUpdate ~ value:', value);
+    UserRepo.updateBiometricStatus(user?.email || '', value ? 1 : 0);
+    setBiometricLogin(value);
+  };
 
   // Settings sections
   const accountSettings = [
@@ -63,7 +74,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({
       subtitle: 'Use fingerprint or face ID',
       isSwitch: true,
       value: biometricLogin,
-      onValueChange: setBiometricLogin,
+      onValueChange: biometricUpdate,
     },
   ];
 
@@ -73,7 +84,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({
       icon: 'logo-apple-ar',
       title: 'Categories',
       subtitle: 'Add/Edit categories.',
-      value: darkMode,
+      // value: darkMode,
       onPress: () =>
         navigation.navigate('AppNavigator', {
           screen: 'CategoryLists',
@@ -340,15 +351,15 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({
             /> */}
             <View style={styles.userAvatar}>
               <Text color={theme.colors.white} style={styles.avatarText}>
-                {userName[0].toUpperCase()}
+                {user?.name[0].toUpperCase()}
               </Text>
             </View>
             <View style={styles.userDetails}>
               <Text color={theme.colors.white} style={styles.userName}>
-                {userName}
+                {user?.name}
               </Text>
               <Text color={theme.colors.white} style={styles.userEmail}>
-                shadab@example.com
+                {user?.email}
               </Text>
             </View>
             <Pressable

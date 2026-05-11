@@ -1,4 +1,3 @@
-import { runMigrations } from '@database/migrations';
 import { DB_NAME, getDB } from '../db';
 import SQLite from 'react-native-sqlite-storage';
 import { restartWithCacheClear } from 'rn-restart';

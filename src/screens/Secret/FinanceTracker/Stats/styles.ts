@@ -50,7 +50,7 @@ export const useStyle = (theme: AppTheme) =>
     statCard: {
       padding: 12,
       alignItems: 'center',
-      width: 110,
+      width: 125,
     },
     statLabel: {
       fontSize: 12,
@@ -179,6 +179,5 @@ export const useStyle = (theme: AppTheme) =>
     categoryAmount: {
       fontSize: 14,
       fontWeight: '500',
-      color: '#EF4444',
     },
   });

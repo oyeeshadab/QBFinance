@@ -1,24 +1,23 @@
 import React, { useState } from 'react';
 import {
   View,
-  StyleSheet,
   Pressable,
   ScrollView,
   Switch,
   Image,
   Alert,
   useColorScheme,
-  Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import FinanceTrackerWrapper from '@components/Wrapper/FinanceTrackerWrapper';
 import Header from '@components/FinanceTracker/Header/Header';
 import NeumorphicContainer from '@components/NeumorphicContainer/NeumorphicContainer';
-import BlurView from '@sbaiahmed1/react-native-blur';
 import { useStyle } from './styles';
 import { useTheme } from '@theme/ThemeProvider';
 import Text from '@components/Text/Text';
+import { User } from '@database/types';
+import { UserRepo } from '@database/repository/user.repo';
 
 interface ProfilePageProps {
   userName?: string;
@@ -26,17 +25,18 @@ interface ProfilePageProps {
   userAvatar?: string;
 }
 
-const ProfilePage: React.FC<ProfilePageProps> = ({
-  userName = 'Shadab',
-  userEmail = 'shadab@example.com',
-  userAvatar,
-}) => {
+const ProfilePage: React.FC<ProfilePageProps> = ({ userAvatar }) => {
   const navigation = useNavigation();
   const systemColorScheme = useColorScheme();
   const [isDarkMode, setIsDarkMode] = useState(systemColorScheme === 'dark');
   const [notifications, setNotifications] = useState(true);
   const { theme } = useTheme();
   const styles = useStyle(theme);
+  const [user, setUser] = useState<User | null>(null);
+
+  UserRepo.getCurrentLoggedInUser().then(userVal => {
+    setUser(userVal);
+  });
 
   const menuItems = [
     {
@@ -93,6 +93,16 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
     },
   ];
 
+  const updateAuthorized = async () => {
+    // await DatabaseManagerRepo.dropDatabase();
+    await UserRepo.logoutCurrentUser();
+    Alert.alert('Logged Out', 'You have been logged out successfully');
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'AppNavigator' as never }],
+    });
+  };
+
   const handleLogout = () => {
     Alert.alert('Logout', 'Are you sure you want to logout?', [
       { text: 'Cancel', style: 'cancel' },
@@ -100,7 +110,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
         text: 'Logout',
         style: 'destructive',
         onPress: () => {
-          Alert.alert('Logged Out', 'You have been logged out successfully');
+          updateAuthorized(false);
         },
       },
     ]);
@@ -116,18 +126,13 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
         {/* Profile Info */}
         <NeumorphicContainer>
           <View style={styles.profileSection}>
-            {/* <BlurView
-              blurType="regular"
-              blurAmount={Platform.OS === 'ios' ? 25 : 5}
-              style={[StyleSheet.absoluteFill]}
-            /> */}
             <View style={styles.avatarContainer}>
               {userAvatar ? (
                 <Image source={{ uri: userAvatar }} style={styles.avatar} />
               ) : (
                 <View style={styles.avatarPlaceholder}>
                   <Text style={styles.avatarText}>
-                    {userName[0].toUpperCase()}
+                    {user?.name[0].toUpperCase()}
                   </Text>
                 </View>
               )}
@@ -145,10 +150,10 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
               </Pressable>
             </View>
             <Text color={theme.colors.white} style={styles.userName}>
-              {userName}
+              {user?.name}
             </Text>
             <Text color={theme.colors.white} style={styles.userEmail}>
-              {userEmail}
+              {user?.email}
             </Text>
             <Pressable
               style={({ pressed }) => [
@@ -161,33 +166,9 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
           </View>
         </NeumorphicContainer>
 
-        {/* Stats Cards */}
-        {/* <View style={styles.statsContainer}>
-          <View style={styles.statCard}>
-            <Icon name="wallet-outline" size={24} color="#3B82F6" />
-            <Text style={styles.statLabel}>Total Spent</Text>
-            <Text style={styles.statValue}>₹ 45,230</Text>
-          </View>
-          <View style={styles.statCard}>
-            <Icon name="trending-up-outline" size={24} color="#10B981" />
-            <Text style={styles.statLabel}>Total Income</Text>
-            <Text style={styles.statValue}>₹ 1,35,000</Text>
-          </View>
-          <View style={styles.statCard}>
-            <Icon name="calendar-outline" size={24} color="#F59E0B" />
-            <Text style={styles.statLabel}>Member Since</Text>
-            <Text style={styles.statValue}>Mar 2025</Text>
-          </View>
-        </View> */}
-
         {/* Menu Items */}
         <NeumorphicContainer>
           <View style={styles.menuSection}>
-            {/* <BlurView
-              blurType="regular"
-              blurAmount={Platform.OS === 'ios' ? 25 : 5}
-              style={[StyleSheet.absoluteFill]}
-            /> */}
             <Text color={theme.colors.white} style={styles.sectionTitle}>
               Settings
             </Text>
