@@ -2,8 +2,10 @@ export interface User {
   id?: number;
   name: string;
   email: string;
+  is_logged_in?: number; // 0 = false, 1 = true
+  isFingerprintEnable?: number;
+  created_at?: string;
 }
-
 export interface Task {
   id?: number;
   title: string;
@@ -24,6 +26,7 @@ export interface Wallet {
 export type TransactionType = 'income' | 'expense';
 
 export interface Transaction {
+  user?: User;
   id?: number;
   title: string;
   datetime?: string;

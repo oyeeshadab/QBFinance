@@ -19,7 +19,7 @@ export const useCreateCategory = (item: Category) => {
     '#F87171',
   ];
   const [selectedColorCat, setSelectedColorCat] = useState(
-    isEditMode ? item?.color : '',
+    isEditMode ? item?.color : colors[0],
   );
   const [type, setType] = useState<'expense' | 'income'>('expense');
   const [selectedCategory, setSelectedCategory] = useState(

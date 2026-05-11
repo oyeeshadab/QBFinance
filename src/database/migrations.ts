@@ -7,9 +7,11 @@ export const runMigrations = async () => {
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
-      email TEXT UNIQUE
+      email TEXT UNIQUE NOT NULL,
+      is_logged_in INTEGER DEFAULT 0,
+      isFingerprintEnable INTEGER DEFAULT 0
     );
-  `);
+`);
 
   await db.executeSql(`
     CREATE TABLE IF NOT EXISTS tasks (
@@ -46,6 +48,7 @@ export const runMigrations = async () => {
       amount REAL NOT NULL,
       type TEXT NOT NULL,
       category_id INTEGER,
+      user_id INTEGER,
       note TEXT,
       FOREIGN KEY (category_id) REFERENCES categories(id)
     );

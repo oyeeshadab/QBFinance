@@ -1,9 +1,11 @@
 import { CurrentMonthTxResponse, Transaction } from '@database/types';
 import { getDB } from '../db';
 import { TransactionSMSRepo } from './transactionsSMS.repo';
+import { UserRepo } from './user.repo';
 
 export const TransactionRepo = {
   createTransaction: async (payload: Transaction) => {
+    const user = await UserRepo.getCurrentLoggedInUser();
     try {
       const db = await getDB();
 
@@ -11,14 +13,15 @@ export const TransactionRepo = {
 
       const res = await db.executeSql(
         `INSERT INTO transactions
-        (title,amount, type, category_id, note, datetime)
-        VALUES (?, ?, ?, ?, ?,?)`,
+        (title,amount, type, category_id, note, user_id, datetime)
+        VALUES (?, ?, ?, ?, ?, ?, ?)`,
         [
           payload.title,
           payload.amount,
           payload.type,
           payload.category_id,
           payload.note || '',
+          user?.id,
           datetime,
         ],
       );
@@ -108,6 +111,7 @@ export const TransactionRepo = {
 
   getCurrentMonthTransactions: async (): Promise<CurrentMonthTxResponse> => {
     const db = await getDB();
+    const user = await UserRepo.getCurrentLoggedInUser();
 
     const tx = await db.executeSql(`
     SELECT 
@@ -120,7 +124,8 @@ export const TransactionRepo = {
       c.color as category_color
     FROM transactions t
     LEFT JOIN categories c ON t.category_id = c.id
-    WHERE t.datetime >= date('now','start of month')
+    WHERE t.user_id = ${user?.id}
+    AND t.datetime >= date('now','start of month')
     AND t.datetime < date('now','start of month','+1 month')
     ORDER BY t.datetime DESC
   `);
@@ -130,7 +135,8 @@ export const TransactionRepo = {
       COALESCE(SUM(CASE WHEN type='income' THEN amount END),0) as total_income,
       COALESCE(SUM(CASE WHEN type='expense' THEN amount END),0) as total_expense
     FROM transactions
-    WHERE datetime >= date('now','start of month')
+    WHERE user_id = ${user?.id}
+    AND datetime >= date('now','start of month')
     AND datetime < date('now','start of month','+1 month')
   `);
 
@@ -156,6 +162,7 @@ export const TransactionRepo = {
     type?: 'income' | 'expense',
   ) => {
     const db = await getDB();
+    const user = await UserRepo.getCurrentLoggedInUser();
 
     let dateCondition = '';
     switch (period) {
@@ -180,7 +187,8 @@ export const TransactionRepo = {
       c.icon as category_icon
     FROM transactions t
     LEFT JOIN categories c ON t.category_id = c.id
-    WHERE ${dateCondition}
+      WHERE user_id = ${user?.id}
+    AND ${dateCondition}
     ${typeCondition}
     ORDER BY t.datetime DESC
   `);
@@ -193,6 +201,7 @@ export const TransactionRepo = {
     type: 'income' | 'expense',
   ) => {
     const db = await getDB();
+    const user = await UserRepo.getCurrentLoggedInUser();
 
     let dateCondition = '';
     switch (period) {
@@ -214,7 +223,8 @@ export const TransactionRepo = {
       SUM(t.amount) as total_amount
     FROM transactions t
     LEFT JOIN categories c ON t.category_id = c.id
-    WHERE ${dateCondition}
+    WHERE user_id = ${user?.id}
+    AND ${dateCondition}
     AND t.type = '${type}'
     GROUP BY t.category_id
     ORDER BY total_amount DESC

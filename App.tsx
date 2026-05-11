@@ -8,7 +8,6 @@ import { ToastProvider } from './src/components/Toast/ToastProvider';
 import { initDatabase } from './src/database';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { PortalProvider } from '@gorhom/portal';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const AppContent = () => {
   return (
@@ -24,8 +23,6 @@ const AppContent = () => {
 };
 
 const App = () => {
-  const queryClient = new QueryClient();
-
   useEffect(() => {
     requestNotificationPermission();
     initDatabase();
@@ -36,9 +33,7 @@ const App = () => {
         <SafeAreaProvider>
           <ThemeProvider>
             <ToastProvider>
-              <QueryClientProvider client={queryClient}>
-                <AppContent />
-              </QueryClientProvider>
+              <AppContent />
             </ToastProvider>
           </ThemeProvider>
         </SafeAreaProvider>

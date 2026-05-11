@@ -18,7 +18,7 @@ const CIRCLE_SIZE = 60;
 export const useTransaction = (item: Transaction | undefined) => {
   const titleRef = useRef<TextInput>(null);
   const bottomSheetRef = useRef<BottomSheetRef>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [sheetType, setSheetType] = useState<BottomSheetDisplayType | null>(
     null,
   );
@@ -49,11 +49,11 @@ export const useTransaction = (item: Transaction | undefined) => {
   const opacityAnim = useRef(new Animated.Value(1)).current;
   const nextColorRef = useRef('#000000');
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  }, []);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setLoading(false);
+  //   }, 100);
+  // }, []);
 
   useEffect(() => {
     if (showToast) {

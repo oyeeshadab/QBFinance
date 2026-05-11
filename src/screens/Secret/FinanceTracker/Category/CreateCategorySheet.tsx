@@ -92,7 +92,7 @@ export const CreateCategorySheet = () => {
                       { backgroundColor: selectedColorCat },
                     ]}
                   >
-                    <CategoryIcon icon_name={item?.icon as IconName} />
+                    <CategoryIcon icon_name={selectedCategory as IconName} />
                   </TouchableOpacity>
                 </View>
 

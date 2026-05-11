@@ -1,11 +1,13 @@
 import { View, TouchableOpacity, Pressable } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import { useTheme } from '@theme/ThemeProvider';
 import { useStyle } from './styles';
 import Text from '@components/Text/Text';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
+import { UserRepo } from '@database/repository/user.repo';
+import { User } from '@database/types';
 
 interface Props {
   backButton: boolean;
@@ -28,6 +30,11 @@ const Header = ({
   const { theme } = useTheme();
   const styles = useStyle(theme);
   const navigation = useNavigation();
+  const [user, setUser] = useState<User | null>(null);
+
+  UserRepo.getCurrentLoggedInUser().then(userVal => {
+    setUser(userVal);
+  });
 
   return (
     <View style={styles.container}>
@@ -66,7 +73,7 @@ const Header = ({
             Welcome Back
           </Text>
           <Text color="#fff" weight="deliusR" variant="title">
-            Shadab
+            {user?.name}
           </Text>
         </View>
       )}
@@ -81,7 +88,9 @@ const Header = ({
               });
             }}
           >
-            <Text style={{ color: 'white' }}>SH</Text>
+            <Text style={{ color: 'white' }}>
+              {user?.name[0].toUpperCase()}
+            </Text>
           </TouchableOpacity>
         </View>
       )}

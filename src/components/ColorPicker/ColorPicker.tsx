@@ -51,14 +51,10 @@ const styles = StyleSheet.create({
   container: {
     marginVertical: 40,
     borderWidth: 1,
-    borderColor: 'gray',
     borderRadius: 10,
     height: 400,
     padding: 30,
-    shadowColor: '#000',
-    shadowOpacity: 0.06,
-    shadowRadius: 12,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 4,
+    borderColor: 'rgba(255,255,255,0.25)',
+    backgroundColor: 'rgba(255,255,255,0.12)',
   },
 });

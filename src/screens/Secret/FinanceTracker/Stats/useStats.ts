@@ -203,6 +203,8 @@ export const useStats = () => {
       if (categoryMap.has(categoryName)) {
         categoryMap.set(categoryName, {
           ...categoryMap.get(categoryName),
+          legendFontColor: theme.colors.white || '#FFFFFF',
+          legendFontSize: 12,
           amount: categoryMap.get(categoryName).amount + tx.amount,
         });
       } else {
@@ -210,7 +212,7 @@ export const useStats = () => {
           name: categoryName,
           amount: tx.amount,
           color: categoryColor,
-          legendFontColor: theme.colors.text || '#FFFFFF',
+          legendFontColor: theme.colors.white || '#FFFFFF',
           legendFontSize: 12,
         });
       }
@@ -267,7 +269,10 @@ export const useStats = () => {
     backgroundGradientTo: theme.colors.background || '#FFFFFF',
     decimalPlaces: 0,
     color: (opacity = 1) => `rgba(59, 130, 246, ${opacity})`,
-    labelColor: (opacity = 1) => `rgba(107, 114, 128, ${opacity})`,
+    // labelColor: (opacity = 1) => `rgba(107, 114, 128, ${opacity})`,
+    // labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`, // Changed to white
+    labelColor: () => '#FFFFFF',
+
     style: {
       borderRadius: 16,
     },
